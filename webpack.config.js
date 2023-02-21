@@ -6,6 +6,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.ts',
   devtool: 'inline-source-map',
+  cache: false,
   devServer: {
     static: './dist',
   },
@@ -38,14 +39,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader',
-            // options: {
-            //   transpileOnly: true,
-            // },
-          }
-        ]
+        loader: 'ts-loader'
       },
       {
         test: /\.css$/i,
@@ -81,5 +75,11 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    // Add support for TypeScripts fully qualified ESM imports.
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+      ".cjs": [".cjs", ".cts"],
+      ".mjs": [".mjs", ".mts"]
+     }
   },
 };

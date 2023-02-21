@@ -1,35 +1,59 @@
 import { GRAVITY } from "../utils/constants";
-import { ControlKey, Coordinate2D } from "./types";
+import { AttackBox, ControlKey, Coordinate2D } from "./types";
 
 interface SpriteConstructor {
-  position: Coordinate2D,
-  velocity: Coordinate2D,
-  canvas: HTMLCanvasElement,
+  position: Coordinate2D;
+  velocity: Coordinate2D;
+  canvas: HTMLCanvasElement;
+  color?: string;
+  offset: Coordinate2D;
 }
 
 export default class Sprite {
   position: Coordinate2D;
   velocity: Coordinate2D;
   height: number;
+  width: number;
   canvas: HTMLCanvasElement;
   drawingContext: CanvasRenderingContext2D;
   lastKey: ControlKey;
+  attackBox: AttackBox
+  color: string;
+  isAttacking: boolean;
 
-  constructor({ position, velocity, canvas }: SpriteConstructor) {
+  constructor({ position, velocity, canvas, color, offset }: SpriteConstructor) {
     this.position = position;
     this.velocity = velocity;
     this.canvas = canvas;
     this.drawingContext = canvas.getContext("2d");
     this.height = 250;
+    this.width = 50;
+    this.attackBox = {
+      position: {
+        x: this.position.x,
+        y: this.position.y
+      },
+      width: 100,
+      height: 50,
+      offset,
+    };
+    this.color = color ?? 'red';
+    this.isAttacking = false;
   }
 
   public draw() {
-    this.drawingContext.fillStyle = 'red';
-    this.drawingContext.fillRect(this.position.x, this.position.y, 50, this.height);
+    this.drawingContext.fillStyle = this.color;
+    this.drawingContext.fillRect(this.position.x, this.position.y, this.width, this.height);
+    if (this.isAttacking) {
+      this.drawingContext.fillStyle = 'gray';
+      this.drawingContext.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
+    }
   }
 
   public update() {
     this.draw();
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+    this.attackBox.position.y = this.position.y;
     
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -39,5 +63,12 @@ export default class Sprite {
     } else {
       this.velocity.y += GRAVITY;
     }
+  }
+
+  public attack() {
+    this.isAttacking = true;
+    setTimeout(() => {
+      this.isAttacking = false;
+    }, 100)
   }
 }

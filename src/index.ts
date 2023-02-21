@@ -1,5 +1,6 @@
 import Sprite from "./models/sprite";
 import { ControlKeys } from "./models/types";
+import { detectCollition } from "./utils/utils";
 
 const canvas = <HTMLCanvasElement> document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -18,7 +19,12 @@ const player = new Sprite({
     x: 0,
     y: 0
   },
-  canvas
+  canvas,
+  color: 'blue',
+  offset: {
+    x: 0,
+    y: 0
+  }
 });
 
 const enemy = new Sprite({
@@ -30,7 +36,12 @@ const enemy = new Sprite({
     x: 0,
     y: 0
   },
-  canvas
+  canvas,
+  color: 'purple',
+  offset: {
+    x: -50,
+    y: 0
+  }
 });
 
 const keys = {
@@ -74,12 +85,22 @@ function animate() {
   } else if (keys.ArrowRight.pressed && enemy.lastKey === ControlKeys.ArrowRight) {
     enemy.velocity.x = 5;
   }
+
+  if (detectCollition(player, enemy) && player.isAttacking) {
+      player.isAttacking = false;
+      console.log('hit p1');
+  }
+
+  if (detectCollition(enemy, player) && enemy.isAttacking) {
+    enemy.isAttacking = false;
+    console.log('hit p2');
+  }
 }
 animate();
 
 window.addEventListener('keydown', (event: KeyboardEvent) => {
   const { key } = event;
-
+  
   switch(key) {
     case ControlKeys.d:
     case ControlKeys.a:
@@ -88,6 +109,10 @@ window.addEventListener('keydown', (event: KeyboardEvent) => {
       break;
     case ControlKeys.w:
       player.velocity.y = -20;
+      break;
+    case ControlKeys.space:
+      player.attack();
+      break;
 
     case ControlKeys.ArrowRight:
     case ControlKeys.ArrowLeft:
@@ -96,6 +121,9 @@ window.addEventListener('keydown', (event: KeyboardEvent) => {
       break;
     case ControlKeys.ArrowUp: 
       enemy.velocity.y = -20;
+      break;
+    case ControlKeys.ArrowDown:
+      enemy.attack();
       break;
   }
 });

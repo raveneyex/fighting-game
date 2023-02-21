@@ -3,8 +3,12 @@ export interface Coordinate2D {
   y: number;
 };
 
-export type ControlKey = 
-  'a' | 's' | 'd' | 'w' | 'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown';
+export interface AttackBox {
+  width: number;
+  height: number;
+  position: Coordinate2D;
+  offset: Coordinate2D;
+}
 
 export enum ControlKeys {
   a = 'a',
@@ -14,5 +18,9 @@ export enum ControlKeys {
   ArrowLeft = 'ArrowLeft',
   ArrowRight = 'ArrowRight',
   ArrowUp = 'ArrowUp',
-  ArrowDown = 'ArrowDown'
+  ArrowDown = 'ArrowDown',
+  space = ' ',
 };
+
+export type ControlKey = 
+  ControlKeys.a | ControlKeys.s | ControlKeys.d | ControlKeys.w | ControlKeys.ArrowLeft | ControlKeys.ArrowRight | ControlKeys.ArrowUp | ControlKeys.ArrowDown | ControlKeys.space;
