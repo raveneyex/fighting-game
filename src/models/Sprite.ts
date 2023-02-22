@@ -20,6 +20,7 @@ export default class Sprite {
   attackBox: AttackBox;
   color: string;
   isAttacking: boolean;
+  health: number;
 
   constructor({
     position,
@@ -45,6 +46,7 @@ export default class Sprite {
     };
     this.color = color ?? "red";
     this.isAttacking = false;
+    this.health = 100;
   }
 
   public draw() {

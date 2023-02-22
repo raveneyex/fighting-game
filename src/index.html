@@ -4,6 +4,24 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
+    <div class="container">
+      <div class="data">
+        <!-- Player 1 Health -->
+        <div class="healthBarContainer player1">
+          <div class="healthBar"></div>
+          <div id="player1HealthBar" class="filler"></div>
+        </div>
+
+        <!-- Timer -->
+        <div class="timer"></div>
+
+        <!-- Player 2 Health -->
+        <div class="healthBarContainer player2">
+          <div class="healthBar"></div>
+          <div id="player2HealthBar" class="filler"></div>
+        </div>
+      </div>
+      <canvas id="canvas"></canvas>
+    </div>
   </body>
 </html>

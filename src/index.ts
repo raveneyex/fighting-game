@@ -1,6 +1,7 @@
 import Sprite from "./models/sprite";
 import { ControlKeys } from "./models/types";
 import { detectCollition } from "./utils/utils";
+import "./style.css";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -91,12 +92,18 @@ function animate() {
 
   if (detectCollition(player, enemy) && player.isAttacking) {
     player.isAttacking = false;
-    console.log("hit p1");
+    enemy.health -= 20;
+    const player2HealthHTMLElement: HTMLDivElement =
+      document.querySelector("#player2HealthBar");
+    player2HealthHTMLElement.style.width = `${enemy.health}%`;
   }
 
   if (detectCollition(enemy, player) && enemy.isAttacking) {
     enemy.isAttacking = false;
-    console.log("hit p2");
+    player.health -= 20;
+    const player1HealthHTMLElement: HTMLDivElement =
+      document.querySelector("#player1HealthBar");
+    player1HealthHTMLElement.style.width = `${player.health}%`;
   }
 }
 animate();
