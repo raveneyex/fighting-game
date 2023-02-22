@@ -2,7 +2,7 @@ import Sprite from "./models/sprite";
 import { ControlKeys } from "./models/types";
 import { detectCollition } from "./utils/utils";
 
-const canvas = <HTMLCanvasElement> document.querySelector("#canvas");
+const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
 
 canvas.width = 1024;
@@ -13,35 +13,35 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 const player = new Sprite({
   position: {
     x: 0,
-    y: 0
+    y: 0,
   },
   velocity: {
     x: 0,
-    y: 0
+    y: 0,
   },
   canvas,
-  color: 'blue',
+  color: "blue",
   offset: {
     x: 0,
-    y: 0
-  }
+    y: 0,
+  },
 });
 
 const enemy = new Sprite({
   position: {
     x: 800,
-    y: 50
+    y: 50,
   },
   velocity: {
     x: 0,
-    y: 0
+    y: 0,
   },
   canvas,
-  color: 'purple',
+  color: "purple",
   offset: {
     x: -50,
-    y: 0
-  }
+    y: 0,
+  },
 });
 
 const keys = {
@@ -55,19 +55,19 @@ const keys = {
     pressed: false,
   },
   ArrowRight: {
-    pressed: false
+    pressed: false,
   },
   ArrowLeft: {
-    pressed: false
+    pressed: false,
   },
   ArrowUp: {
-    pressed: false
-  }
+    pressed: false,
+  },
 };
 
 function animate() {
   window.requestAnimationFrame(animate);
-  c.fillStyle = 'black';
+  c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update();
@@ -82,26 +82,29 @@ function animate() {
   enemy.velocity.x = 0;
   if (keys.ArrowLeft.pressed && enemy.lastKey === ControlKeys.ArrowLeft) {
     enemy.velocity.x = -5;
-  } else if (keys.ArrowRight.pressed && enemy.lastKey === ControlKeys.ArrowRight) {
+  } else if (
+    keys.ArrowRight.pressed &&
+    enemy.lastKey === ControlKeys.ArrowRight
+  ) {
     enemy.velocity.x = 5;
   }
 
   if (detectCollition(player, enemy) && player.isAttacking) {
-      player.isAttacking = false;
-      console.log('hit p1');
+    player.isAttacking = false;
+    console.log("hit p1");
   }
 
   if (detectCollition(enemy, player) && enemy.isAttacking) {
     enemy.isAttacking = false;
-    console.log('hit p2');
+    console.log("hit p2");
   }
 }
 animate();
 
-window.addEventListener('keydown', (event: KeyboardEvent) => {
+window.addEventListener("keydown", (event: KeyboardEvent) => {
   const { key } = event;
-  
-  switch(key) {
+
+  switch (key) {
     case ControlKeys.d:
     case ControlKeys.a:
       keys[key].pressed = true;
@@ -119,7 +122,7 @@ window.addEventListener('keydown', (event: KeyboardEvent) => {
       keys[key].pressed = true;
       enemy.lastKey = key;
       break;
-    case ControlKeys.ArrowUp: 
+    case ControlKeys.ArrowUp:
       enemy.velocity.y = -20;
       break;
     case ControlKeys.ArrowDown:
@@ -128,9 +131,9 @@ window.addEventListener('keydown', (event: KeyboardEvent) => {
   }
 });
 
-window.addEventListener('keyup', (event: KeyboardEvent) => {
+window.addEventListener("keyup", (event: KeyboardEvent) => {
   const { key } = event;
-  switch(key) {
+  switch (key) {
     case ControlKeys.d:
     case ControlKeys.a:
     case ControlKeys.ArrowRight:

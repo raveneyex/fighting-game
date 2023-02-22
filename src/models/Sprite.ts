@@ -17,11 +17,17 @@ export default class Sprite {
   canvas: HTMLCanvasElement;
   drawingContext: CanvasRenderingContext2D;
   lastKey: ControlKey;
-  attackBox: AttackBox
+  attackBox: AttackBox;
   color: string;
   isAttacking: boolean;
 
-  constructor({ position, velocity, canvas, color, offset }: SpriteConstructor) {
+  constructor({
+    position,
+    velocity,
+    canvas,
+    color,
+    offset,
+  }: SpriteConstructor) {
     this.position = position;
     this.velocity = velocity;
     this.canvas = canvas;
@@ -31,22 +37,32 @@ export default class Sprite {
     this.attackBox = {
       position: {
         x: this.position.x,
-        y: this.position.y
+        y: this.position.y,
       },
       width: 100,
       height: 50,
       offset,
     };
-    this.color = color ?? 'red';
+    this.color = color ?? "red";
     this.isAttacking = false;
   }
 
   public draw() {
     this.drawingContext.fillStyle = this.color;
-    this.drawingContext.fillRect(this.position.x, this.position.y, this.width, this.height);
+    this.drawingContext.fillRect(
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
     if (this.isAttacking) {
-      this.drawingContext.fillStyle = 'gray';
-      this.drawingContext.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
+      this.drawingContext.fillStyle = "gray";
+      this.drawingContext.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+      );
     }
   }
 
@@ -54,7 +70,7 @@ export default class Sprite {
     this.draw();
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
-    
+
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
@@ -69,6 +85,6 @@ export default class Sprite {
     this.isAttacking = true;
     setTimeout(() => {
       this.isAttacking = false;
-    }, 100)
+    }, 100);
   }
 }

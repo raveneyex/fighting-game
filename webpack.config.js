@@ -1,35 +1,35 @@
-const path = require('path');
-const json5 = require('json5');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const json5 = require("json5");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
-  devtool: 'inline-source-map',
+  mode: "development",
+  entry: "./src/index.ts",
+  devtool: "inline-source-map",
   cache: false,
   devServer: {
-    static: './dist',
+    static: "./dist",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'fuck you',
-      template: './src/index.html',
+      title: "fuck you",
+      template: "./src/index.html",
     }),
   ],
   output: {
-    filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "dist"),
     clean: true,
   },
   optimization: {
-    runtimeChunk: 'single',
-    moduleIds: 'deterministic',
+    runtimeChunk: "single",
+    moduleIds: "deterministic",
     splitChunks: {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
+          name: "vendors",
+          chunks: "all",
         },
       },
     },
@@ -39,34 +39,34 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'ts-loader'
+        loader: "ts-loader",
       },
       {
         test: /\.css$/i,
         exclude: /node_modules/,
         use: [
           {
-            loader: 'style-loader',
+            loader: "style-loader",
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               importLoaders: 1,
-            }
+            },
           },
           {
-            loader: 'postcss-loader'
-          }
-        ]
+            loader: "postcss-loader",
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         exclude: /node_modules/,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
       {
         test: /\.json5$/i,
-        type: 'json',
+        type: "json",
         parser: {
           parse: json5.parse,
         },
@@ -74,12 +74,12 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
     // Add support for TypeScripts fully qualified ESM imports.
     extensionAlias: {
       ".js": [".js", ".ts"],
       ".cjs": [".cjs", ".cts"],
-      ".mjs": [".mjs", ".mts"]
-     }
+      ".mjs": [".mjs", ".mts"],
+    },
   },
 };

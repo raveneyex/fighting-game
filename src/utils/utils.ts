@@ -6,5 +6,5 @@ export function detectCollition(player: Sprite, enemy: Sprite) {
     player.attackBox.position.x <= enemy.position.x + enemy.width &&
     player.position.y + player.attackBox.height >= enemy.position.y &&
     player.attackBox.position.y <= enemy.position.y + enemy.height
-  )
-} 
+  );
+}
