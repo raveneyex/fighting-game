@@ -1,6 +1,6 @@
-import Sprite from "../models/sprite";
+import { Fighter } from "../models";
 
-export function detectCollition(player: Sprite, enemy: Sprite) {
+export function detectCollition(player: Fighter, enemy: Fighter) {
   return (
     player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
     player.attackBox.position.x <= enemy.position.x + enemy.width &&

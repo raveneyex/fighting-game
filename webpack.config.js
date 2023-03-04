@@ -63,6 +63,9 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         exclude: /node_modules/,
         type: "asset/resource",
+        generator: {
+          filename: "images/[name][ext]",
+        },
       },
       {
         test: /\.json5$/i,

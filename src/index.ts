@@ -1,7 +1,9 @@
-import Sprite from "./models/sprite";
+import { Fighter, Sprite } from "./models/";
 import { ControlKeys } from "./models/types";
 import { detectCollition } from "./utils/utils";
+
 import "./style.css";
+import * as backgroundImageSrc from "./assets/background.png";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -11,7 +13,13 @@ canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
-const player = new Sprite({
+const background = new Sprite({
+  position: { x: 0, y: 0 },
+  imageSrc: backgroundImageSrc as unknown as string,
+  canvas,
+});
+
+const player = new Fighter({
   position: {
     x: 0,
     y: 0,
@@ -28,7 +36,7 @@ const player = new Sprite({
   },
 });
 
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: {
     x: 800,
     y: 50,
@@ -70,6 +78,7 @@ function animate() {
   window.requestAnimationFrame(animate);
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
+  background.update();
   player.update();
   enemy.update();
 
