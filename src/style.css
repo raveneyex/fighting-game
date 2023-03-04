@@ -36,11 +36,14 @@
   width: 100%;
 }
 
-.timer {
+#timer {
   width: 100px;
   height: 100px;
   background-color: red;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .player1 {
@@ -50,4 +53,17 @@
 
 .hello {
   color: red;
+}
+
+.message {
+  font-size: 20px;
+  text-shadow: 2px 2px white;
+  position: absolute;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
