@@ -81,12 +81,12 @@ export default class Fighter extends Sprite {
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
 
-    this.drawingContext.fillRect(
-      this.attackBox.position.x,
-      this.attackBox.position.y,
-      this.attackBox.width,
-      this.attackBox.height
-    );
+    // this.drawingContext.fillRect(
+    //   this.attackBox.position.x,
+    //   this.attackBox.position.y,
+    //   this.attackBox.width,
+    //   this.attackBox.height
+    // );
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -96,11 +96,10 @@ export default class Fighter extends Sprite {
       this.canvas.height - 96
     ) {
       this.velocity.y = 0;
-      // this.position.y = 258;
+      this.position.y = 330;
     } else {
       this.velocity.y += GRAVITY;
     }
-    console.log(this.position.y);
   }
 
   public attack() {
@@ -109,6 +108,16 @@ export default class Fighter extends Sprite {
     setTimeout(() => {
       this.isAttacking = false;
     }, 100);
+  }
+
+  public draw() {
+    super.draw();
+    // this.drawingContext.fillRect(
+    //   this.position.x - this.offset.x,
+    //   this.position.y - this.offset.y,
+    //   this.width,
+    //   this.height
+    // );
   }
 
   public switchSprite(sprite: string) {

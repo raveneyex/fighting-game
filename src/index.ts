@@ -37,23 +37,23 @@ const player1 = new Fighter({
   imageSrc: player1Assets.idle.imageSrc,
   frames: player1Assets.idle.frames,
   position: {
-    x: 0,
+    x: 50,
     y: 0,
   },
   canvas,
   offset: {
-    x: 151,
-    y: 96,
+    x: 215,
+    y: 157,
   },
   framesHold: 5,
-  scale: 2,
+  scale: 2.5,
   sprites: player1Assets,
   attackBox: {
     offset: {
       x: 100,
-      y: 60,
+      y: 50,
     },
-    width: 120,
+    width: 160,
     height: 50,
   },
 });
@@ -64,23 +64,23 @@ const player2 = new Fighter({
   imageSrc: player2Assets.idle.imageSrc,
   frames: player2Assets.idle.frames,
   position: {
-    x: 624,
-    y: 0,
+    x: 900,
+    y: 100,
   },
   canvas,
-  offset: {
-    x: -160,
-    y: 106,
-  },
   framesHold: 5,
-  scale: 2,
+  scale: 2.5,
+  offset: {
+    x: 215,
+    y: 167,
+  },
   sprites: player2Assets,
   attackBox: {
     offset: {
-      x: 190,
-      y: 60,
+      x: -170,
+      y: 50,
     },
-    width: 120,
+    width: 170,
     height: 50,
   },
 });
@@ -168,6 +168,7 @@ function animate() {
   }
 
   if (detectCollition(player1, player2) && player1.isAttacking) {
+    console.log("Player 1 hit");
     player1.isAttacking = false;
     player2.health -= 20;
     const player2HealthHTMLElement: HTMLDivElement =
@@ -176,6 +177,7 @@ function animate() {
   }
 
   if (detectCollition(player2, player1) && player2.isAttacking) {
+    console.log("Player 2 hit");
     player2.isAttacking = false;
     player1.health -= 20;
     const player1HealthHTMLElement: HTMLDivElement =
