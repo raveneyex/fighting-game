@@ -5,31 +5,36 @@ import * as run from "./Run.png";
 import * as jump from "./Jump.png";
 import * as fall from "./Fall.png";
 import * as attack from "./Attack1.png";
-import * as hit from "./Take hit.png";
+import * as hit from "./Take Hit.png";
+import * as death from "./Death.png";
 
 export const player1Assets: SpriteListing = {
   idle: {
-    imageSrc: idle as unknown as string,
+    imageSrc: idle,
     frames: 8,
   },
   run: {
-    imageSrc: run as unknown as string,
+    imageSrc: run,
     frames: 8,
   },
   jump: {
-    imageSrc: jump as unknown as string,
+    imageSrc: jump,
     frames: 2,
   },
   fall: {
-    imageSrc: fall as unknown as string,
+    imageSrc: fall,
     frames: 2,
   },
   attack: {
-    imageSrc: attack as unknown as string,
+    imageSrc: attack,
     frames: 6,
   },
   hit: {
-    imageSrc: hit as unknown as string,
+    imageSrc: hit,
     frames: 4,
+  },
+  death: {
+    imageSrc: death,
+    frames: 6,
   },
 };
