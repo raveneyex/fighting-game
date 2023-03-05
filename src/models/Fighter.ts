@@ -111,6 +111,16 @@ export default class Fighter extends Sprite {
     this.isAttacking = true;
   }
 
+  public moveLeft() {
+    this.velocity.x = -5;
+    this.switchSprite("run");
+  }
+
+  public moveRight() {
+    this.velocity.x = 5;
+    this.switchSprite("run");
+  }
+
   public takeHit() {
     this.health -= 20;
     if (this.health <= 0) {

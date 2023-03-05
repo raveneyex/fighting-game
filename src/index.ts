@@ -141,11 +141,9 @@ function animate() {
   player2.velocity.x = 0;
 
   if (keys.a.pressed && player1.lastKey === ControlKeys.a) {
-    player1.velocity.x = -5;
-    player1.switchSprite("run");
+    player1.moveLeft();
   } else if (keys.d.pressed && player1.lastKey === ControlKeys.d) {
-    player1.velocity.x = 5;
-    player1.switchSprite("run");
+    player1.moveRight();
   } else {
     player1.switchSprite("idle");
   }
@@ -156,19 +154,12 @@ function animate() {
   }
 
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
-    player2.velocity.x = -5;
-    player2.switchSprite("run");
+    player2.moveLeft();
   } else if (keys.ArrowRight.pressed && player2.lastKey === ControlKeys.ArrowRight) {
-    player2.velocity.x = 5;
-    player2.switchSprite("run");
+    player2.moveRight();
   } else {
     player2.switchSprite("idle");
   }
-  // if (player2.velocity.y < 0) {
-  //   player2.switchSprite("jump");
-  // } else if (player2.velocity.y > 0) {
-  //   player2.switchSprite("fall");
-  // }
 
   if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
     player1.isAttacking = false;
