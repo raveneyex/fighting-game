@@ -1,11 +1,11 @@
 import { GRAVITY } from "../utils/constants";
 import Sprite, { SpriteConstructor } from "./sprite";
-import { AttackBox, ControlKey, Coordinate2D } from "./types";
+import { AttackBox, ControlKey, Coordinate2D, SpriteListing } from "./types";
 
 export interface FighterConstructor extends SpriteConstructor {
-  velocity: Coordinate2D;
+  velocity?: Coordinate2D;
   color?: string;
-  offset: Coordinate2D;
+  sprites?: SpriteListing;
 }
 
 export default class Fighter extends Sprite {
@@ -17,19 +17,29 @@ export default class Fighter extends Sprite {
   color: string;
   isAttacking: boolean;
   health: number;
+  sprites: SpriteListing;
 
   constructor({
     position,
-    velocity,
+    velocity = { x: 0, y: 0 },
     canvas,
     color,
     offset,
     imageSrc,
-    scale = 1,
     frames = 1,
+    scale = 1,
     framesHold = 1,
+    sprites,
   }: FighterConstructor) {
-    super({ position, canvas, imageSrc, scale, frames, framesHold });
+    super({
+      position,
+      canvas,
+      scale,
+      offset,
+      framesHold,
+      imageSrc,
+      frames,
+    });
     this.position = position;
     this.velocity = velocity;
     this.drawingContext = canvas.getContext("2d");
@@ -47,30 +57,13 @@ export default class Fighter extends Sprite {
     this.color = color ?? "red";
     this.isAttacking = false;
     this.health = 100;
-  }
-
-  public draw() {
-    super.draw();
-    // this.drawingContext.fillStyle = this.color;
-    // this.drawingContext.fillRect(
-    //   this.position.x,
-    //   this.position.y,
-    //   this.width,
-    //   this.height
-    // );
-    if (this.isAttacking) {
-      this.drawingContext.fillStyle = "gray";
-      this.drawingContext.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
+    this.sprites = sprites;
   }
 
   public update() {
     this.draw();
+    this.animateFrames();
+
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
 
@@ -79,7 +72,7 @@ export default class Fighter extends Sprite {
 
     if (
       this.position.y + this.height + this.velocity.y >=
-      this.canvas.height - 97
+      this.canvas.height - 96
     ) {
       this.velocity.y = 0;
     } else {
@@ -92,5 +85,15 @@ export default class Fighter extends Sprite {
     setTimeout(() => {
       this.isAttacking = false;
     }, 100);
+  }
+
+  public switchSprite(sprite: string) {
+    const selectedSprite = this.sprites[sprite];
+
+    if (this.image !== selectedSprite.image) {
+      this.currentFrame = 0;
+      this.image = selectedSprite.image;
+      this.frames = selectedSprite.frames;
+    }
   }
 }

@@ -3,6 +3,16 @@ export interface Coordinate2D {
   y: number;
 }
 
+export interface SpriteData {
+  imageSrc: string;
+  frames: number;
+  image: HTMLImageElement;
+}
+
+export interface SpriteListing {
+  [name: string]: SpriteData;
+}
+
 export interface AttackBox {
   width: number;
   height: number;

@@ -2,6 +2,7 @@ import { Coordinate2D } from "./types";
 
 export interface SpriteConstructor {
   position: Coordinate2D;
+  offset?: Coordinate2D;
   canvas: HTMLCanvasElement;
   imageSrc: string;
   scale?: number;
@@ -12,11 +13,11 @@ export interface SpriteConstructor {
 export default class Sprite {
   scale: number;
   frames: number;
-  frameWidth: number;
   currentFrame: number;
   framesElapsed: number;
   framesHold: number;
   position: Coordinate2D;
+  offset: Coordinate2D;
   canvas: HTMLCanvasElement;
   drawingContext: CanvasRenderingContext2D;
   image: HTMLImageElement;
@@ -25,6 +26,7 @@ export default class Sprite {
     position,
     canvas,
     imageSrc,
+    offset = { x: 0, y: 0 },
     scale = 1,
     frames = 1,
     framesHold = 1,
@@ -37,26 +39,26 @@ export default class Sprite {
     this.scale = scale;
     this.frames = frames;
     this.currentFrame = 0;
-    this.frameWidth = this.image.width / this.frames;
     this.framesElapsed = 0;
     this.framesHold = framesHold;
+    this.offset = offset;
   }
 
   draw() {
     this.drawingContext.drawImage(
       this.image, // the loaded image file
-      this.currentFrame * this.frameWidth, // X location of viewport
+      this.currentFrame * (this.image.width / this.frames), // X location of viewport
       0, // Y location of viewport
-      this.frameWidth, // Width of viewport
+      this.image.width / this.frames, // Width of viewport
       this.image.height, // Height of viewport
-      this.position.x, // X position of image in canvas
-      this.position.y, // Y position of image in canvas
-      this.frameWidth * this.scale, // Width of image in canvas
+      this.position.x - this.offset.x, // X position of image in canvas
+      this.position.y - this.offset.y, // Y position of image in canvas
+      (this.image.width / this.frames) * this.scale, // Width of image in canvas
       this.image.height * this.scale // Height of image in canvas
     );
   }
 
-  moveFrame() {
+  animateFrames() {
     this.framesElapsed++;
 
     if (this.framesElapsed % this.framesHold === 0) {
@@ -70,6 +72,6 @@ export default class Sprite {
 
   public update() {
     this.draw();
-    this.moveFrame();
+    this.animateFrames();
   }
 }

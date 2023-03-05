@@ -5,7 +5,7 @@ import { detectCollition, determineWinner } from "./utils/utils";
 import "./style.css";
 import * as backgroundImageSrc from "./assets/background.png";
 import * as shopImageSrc from "./assets/shop.png";
-import * as player1Idle from "./assets/player1/Idle.png";
+import { getPlayer1Assets } from "./assets/player1/player1Assets";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -14,7 +14,6 @@ canvas.width = 1024;
 canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
-debugger;
 
 const background = new Sprite({
   position: { x: 0, y: 0 },
@@ -31,35 +30,31 @@ const shop = new Sprite({
   framesHold: 5,
 });
 
+const player1Sprites = getPlayer1Assets();
 const player1 = new Fighter({
-  imageSrc: player1Idle as unknown as string,
+  imageSrc: player1Sprites.idle.imageSrc,
+  frames: player1Sprites.idle.frames,
   position: {
-    x: 224,
-    y: 0,
-  },
-  velocity: {
     x: 0,
     y: 0,
   },
   canvas,
   color: "blue",
   offset: {
-    x: 0,
+    x: 110,
     y: 0,
   },
-  frames: 8,
+
+  framesHold: 5,
   scale: 2.4,
+  sprites: player1Sprites,
 });
 
 const player2 = new Fighter({
-  imageSrc: player1Idle as unknown as string,
+  imageSrc: player1Sprites.idle.imageSrc,
   position: {
     x: 800,
     y: 50,
-  },
-  velocity: {
-    x: 0,
-    y: 0,
   },
   canvas,
   color: "purple",
@@ -117,13 +112,21 @@ function animate() {
   player2.update();
 
   player1.velocity.x = 0;
+  player2.velocity.x = 0;
+
   if (keys.a.pressed && player1.lastKey === ControlKeys.a) {
     player1.velocity.x = -5;
+    player1.switchSprite("run");
   } else if (keys.d.pressed && player1.lastKey === ControlKeys.d) {
     player1.velocity.x = 5;
+    player1.switchSprite("run");
+  } else {
+    player1.switchSprite("idle");
+  }
+  if (player1.velocity.y < 0) {
+    player1.switchSprite("jump");
   }
 
-  player2.velocity.x = 0;
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
     player2.velocity.x = -5;
   } else if (
@@ -162,6 +165,7 @@ window.addEventListener("keydown", (event: KeyboardEvent) => {
       player1.lastKey = key;
       break;
     case ControlKeys.w:
+      console.log("player1 v", player1.velocity.y);
       player1.velocity.y = -20;
       break;
     case ControlKeys.space:
