@@ -165,10 +165,8 @@ function animate() {
   }
 
   if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
-    console.log("Player 1 hit");
     player1.isAttacking = false;
     player2.takeHit();
-    player2.health -= 20;
     const player2HealthHTMLElement: HTMLDivElement = document.querySelector("#player2HealthBar");
     player2HealthHTMLElement.style.width = `${player2.health}%`;
   }
@@ -178,7 +176,6 @@ function animate() {
   }
 
   if (detectCollition(player2, player1) && player2.isAttacking && player2.currentFrame === 2) {
-    console.log("Player 2 hit");
     player2.isAttacking = false;
     player1.takeHit();
     const player1HealthHTMLElement: HTMLDivElement = document.querySelector("#player1HealthBar");
@@ -195,30 +192,36 @@ animate();
 window.addEventListener("keydown", (event: KeyboardEvent) => {
   const { key } = event;
 
-  switch (key) {
-    case ControlKeys.d:
-    case ControlKeys.a:
-      keys[key].pressed = true;
-      player1.lastKey = key;
-      break;
-    case ControlKeys.w:
-      player1.velocity.y = -20;
-      break;
-    case ControlKeys.space:
-      player1.attack();
-      break;
+  if (!player1.isDead) {
+    switch (key) {
+      case ControlKeys.d:
+      case ControlKeys.a:
+        keys[key].pressed = true;
+        player1.lastKey = key;
+        break;
+      case ControlKeys.w:
+        player1.velocity.y = -20;
+        break;
+      case ControlKeys.space:
+        player1.attack();
+        break;
+    }
+  }
 
-    case ControlKeys.ArrowRight:
-    case ControlKeys.ArrowLeft:
-      keys[key].pressed = true;
-      player2.lastKey = key;
-      break;
-    case ControlKeys.ArrowUp:
-      player2.velocity.y = -20;
-      break;
-    case ControlKeys.ArrowDown:
-      player2.attack();
-      break;
+  if (!player2.isDead) {
+    switch (key) {
+      case ControlKeys.ArrowRight:
+      case ControlKeys.ArrowLeft:
+        keys[key].pressed = true;
+        player2.lastKey = key;
+        break;
+      case ControlKeys.ArrowUp:
+        player2.velocity.y = -20;
+        break;
+      case ControlKeys.ArrowDown:
+        player2.attack();
+        break;
+    }
   }
 });
 

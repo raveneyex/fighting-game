@@ -21,6 +21,7 @@ export default class Fighter extends Sprite {
   isAttacking: boolean;
   health: number;
   sprites: SpriteListing;
+  isDead: boolean;
 
   constructor({
     position,
@@ -46,6 +47,7 @@ export default class Fighter extends Sprite {
       imageSrc,
       frames,
     });
+    this.isDead = false;
     this.position = position;
     this.velocity = velocity;
     this.drawingContext = canvas.getContext("2d");
@@ -64,6 +66,7 @@ export default class Fighter extends Sprite {
     this.isAttacking = false;
     this.health = 100;
     this.sprites = sprites;
+    this.isDead = false;
     this.initSpriteImages();
   }
 
@@ -76,7 +79,9 @@ export default class Fighter extends Sprite {
 
   public update() {
     this.draw();
-    this.animateFrames();
+    if (!this.isDead) {
+      this.animateFrames();
+    }
 
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
@@ -105,11 +110,23 @@ export default class Fighter extends Sprite {
   }
 
   public takeHit() {
-    this.switchSprite("hit");
     this.health -= 20;
+    // this.switchSprite("hit");
+    if (this.health <= 0) {
+      this.switchSprite("death");
+    } else {
+      this.switchSprite("hit");
+    }
   }
 
   public switchSprite(sprite: string) {
+    if (this.image === this.sprites.death.image) {
+      if (this.currentFrame === this.sprites.death.frames - 1) {
+        this.isDead = true;
+      }
+      return;
+    }
+
     if (this.image === this.sprites.attack.image && this.currentFrame < this.sprites.attack.frames - 1) {
       return;
     }
