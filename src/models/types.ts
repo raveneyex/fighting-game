@@ -16,7 +16,7 @@ export interface SpriteListing {
 export interface AttackBox {
   width: number;
   height: number;
-  position: Coordinate2D;
+  position?: Coordinate2D;
   offset: Coordinate2D;
 }
 

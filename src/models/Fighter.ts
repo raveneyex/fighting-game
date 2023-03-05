@@ -8,6 +8,7 @@ export interface FighterConstructor extends SpriteConstructor {
   sprites?: SpriteListing;
   width: number;
   height: number;
+  attackBox: AttackBox;
 }
 
 export default class Fighter extends Sprite {
@@ -34,6 +35,7 @@ export default class Fighter extends Sprite {
     sprites,
     width,
     height,
+    attackBox,
   }: FighterConstructor) {
     super({
       position,
@@ -54,9 +56,9 @@ export default class Fighter extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      width: 100,
-      height: 50,
-      offset,
+      width: attackBox.width,
+      height: attackBox.height,
+      offset: attackBox.offset,
     };
     this.color = color ?? "red";
     this.isAttacking = false;
@@ -77,7 +79,14 @@ export default class Fighter extends Sprite {
     this.animateFrames();
 
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
+    this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
+
+    this.drawingContext.fillRect(
+      this.attackBox.position.x,
+      this.attackBox.position.y,
+      this.attackBox.width,
+      this.attackBox.height
+    );
 
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;

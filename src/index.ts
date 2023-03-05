@@ -48,6 +48,14 @@ const player1 = new Fighter({
   framesHold: 5,
   scale: 2,
   sprites: player1Assets,
+  attackBox: {
+    offset: {
+      x: 80,
+      y: 120,
+    },
+    width: 100,
+    height: 50,
+  },
 });
 
 const player2 = new Fighter({
@@ -67,6 +75,14 @@ const player2 = new Fighter({
   framesHold: 5,
   scale: 2,
   sprites: player1Assets,
+  attackBox: {
+    offset: {
+      x: 80,
+      y: 120,
+    },
+    width: 100,
+    height: 50,
+  },
 });
 
 const keys = {
