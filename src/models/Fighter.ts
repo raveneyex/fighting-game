@@ -6,6 +6,8 @@ export interface FighterConstructor extends SpriteConstructor {
   velocity?: Coordinate2D;
   color?: string;
   sprites?: SpriteListing;
+  width: number;
+  height: number;
 }
 
 export default class Fighter extends Sprite {
@@ -30,6 +32,8 @@ export default class Fighter extends Sprite {
     scale = 1,
     framesHold = 1,
     sprites,
+    width,
+    height,
   }: FighterConstructor) {
     super({
       position,
@@ -43,8 +47,8 @@ export default class Fighter extends Sprite {
     this.position = position;
     this.velocity = velocity;
     this.drawingContext = canvas.getContext("2d");
-    this.height = 250;
-    this.width = 50;
+    this.height = height;
+    this.width = width;
     this.attackBox = {
       position: {
         x: this.position.x,
@@ -83,7 +87,7 @@ export default class Fighter extends Sprite {
       this.canvas.height - 96
     ) {
       this.velocity.y = 0;
-      this.position.y = 230;
+      this.position.y = 258;
     } else {
       this.velocity.y += GRAVITY;
     }

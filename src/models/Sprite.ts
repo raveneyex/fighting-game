@@ -51,6 +51,7 @@ export default class Sprite {
       0, // Y location of viewport
       this.image.width / this.frames, // Width of viewport
       this.image.height, // Height of viewport
+
       this.position.x - this.offset.x, // X position of image in canvas
       this.position.y - this.offset.y, // Y position of image in canvas
       (this.image.width / this.frames) * this.scale, // Width of image in canvas
