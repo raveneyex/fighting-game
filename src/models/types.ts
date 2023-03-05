@@ -6,7 +6,7 @@ export interface Coordinate2D {
 export interface SpriteData {
   imageSrc: string;
   frames: number;
-  image: HTMLImageElement;
+  image?: HTMLImageElement;
 }
 
 export interface SpriteListing {

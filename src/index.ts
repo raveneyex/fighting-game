@@ -125,6 +125,8 @@ function animate() {
   }
   if (player1.velocity.y < 0) {
     player1.switchSprite("jump");
+  } else if (player1.velocity.y > 0) {
+    player1.switchSprite("fall");
   }
 
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
@@ -165,7 +167,6 @@ window.addEventListener("keydown", (event: KeyboardEvent) => {
       player1.lastKey = key;
       break;
     case ControlKeys.w:
-      console.log("player1 v", player1.velocity.y);
       player1.velocity.y = -20;
       break;
     case ControlKeys.space:

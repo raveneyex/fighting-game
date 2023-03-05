@@ -58,6 +58,14 @@ export default class Fighter extends Sprite {
     this.isAttacking = false;
     this.health = 100;
     this.sprites = sprites;
+    this.initSpriteImages();
+  }
+
+  private initSpriteImages() {
+    for (const sprite in this.sprites) {
+      this.sprites[sprite].image = new Image();
+      this.sprites[sprite].image.src = this.sprites[sprite].imageSrc;
+    }
   }
 
   public update() {
@@ -75,12 +83,15 @@ export default class Fighter extends Sprite {
       this.canvas.height - 96
     ) {
       this.velocity.y = 0;
+      this.position.y = 230;
     } else {
       this.velocity.y += GRAVITY;
     }
+    console.log(this.position.y);
   }
 
   public attack() {
+    this.switchSprite("attack");
     this.isAttacking = true;
     setTimeout(() => {
       this.isAttacking = false;
@@ -88,6 +99,13 @@ export default class Fighter extends Sprite {
   }
 
   public switchSprite(sprite: string) {
+    if (
+      this.image === this.sprites.attack.image &&
+      this.currentFrame < this.sprites.attack.frames - 1
+    ) {
+      return;
+    }
+
     const selectedSprite = this.sprites[sprite];
 
     if (this.image !== selectedSprite.image) {
