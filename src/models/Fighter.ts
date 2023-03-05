@@ -22,6 +22,7 @@ export default class Fighter extends Sprite {
   health: number;
   sprites: SpriteListing;
   isDead: boolean;
+  isJumping: boolean;
 
   constructor({
     position,
@@ -67,6 +68,7 @@ export default class Fighter extends Sprite {
     this.health = 100;
     this.sprites = sprites;
     this.isDead = false;
+    this.isJumping = false;
     this.initSpriteImages();
   }
 
@@ -111,12 +113,16 @@ export default class Fighter extends Sprite {
 
   public takeHit() {
     this.health -= 20;
-    // this.switchSprite("hit");
     if (this.health <= 0) {
       this.switchSprite("death");
     } else {
       this.switchSprite("hit");
     }
+  }
+
+  public jump() {
+    this.velocity.y = -20;
+    this.switchSprite("jump");
   }
 
   public switchSprite(sprite: string) {

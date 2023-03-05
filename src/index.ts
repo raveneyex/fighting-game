@@ -164,11 +164,11 @@ function animate() {
   } else {
     player2.switchSprite("idle");
   }
-  if (player2.velocity.y < 0) {
-    player2.switchSprite("jump");
-  } else if (player2.velocity.y > 0) {
-    player2.switchSprite("fall");
-  }
+  // if (player2.velocity.y < 0) {
+  //   player2.switchSprite("jump");
+  // } else if (player2.velocity.y > 0) {
+  //   player2.switchSprite("fall");
+  // }
 
   if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
     player1.isAttacking = false;
@@ -193,6 +193,10 @@ function animate() {
   if (player2.isAttacking && player2.currentFrame === 2) {
     player2.isAttacking = false;
   }
+
+  if (player1.health === 0 || player2.health === 0) {
+    determineWinner(player1, player2, timerId);
+  }
 }
 decreaseTimer();
 animate();
@@ -208,7 +212,8 @@ window.addEventListener("keydown", (event: KeyboardEvent) => {
         player1.lastKey = key;
         break;
       case ControlKeys.w:
-        player1.velocity.y = -20;
+        player1.jump();
+        // player1.velocity.y = -20;
         break;
       case ControlKeys.space:
         player1.attack();
@@ -224,7 +229,8 @@ window.addEventListener("keydown", (event: KeyboardEvent) => {
         player2.lastKey = key;
         break;
       case ControlKeys.ArrowUp:
-        player2.velocity.y = -20;
+        player2.jump();
+        // player2.velocity.y = -20;
         break;
       case ControlKeys.ArrowDown:
         player2.attack();
