@@ -1,3 +1,5 @@
+import gsap from "gsap";
+
 import { Fighter, Sprite } from "./models/";
 import { ControlKeys } from "./models/types";
 import { detectCollition, determineWinner } from "./utils/utils";
@@ -167,8 +169,9 @@ function animate() {
   if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
     player1.isAttacking = false;
     player2.takeHit();
-    const player2HealthHTMLElement: HTMLDivElement = document.querySelector("#player2HealthBar");
-    player2HealthHTMLElement.style.width = `${player2.health}%`;
+    gsap.to("#player2HealthBar", {
+      width: `${player2.health}%`,
+    });
   }
 
   if (player1.isAttacking && player1.currentFrame === 4) {
@@ -178,8 +181,9 @@ function animate() {
   if (detectCollition(player2, player1) && player2.isAttacking && player2.currentFrame === 2) {
     player2.isAttacking = false;
     player1.takeHit();
-    const player1HealthHTMLElement: HTMLDivElement = document.querySelector("#player1HealthBar");
-    player1HealthHTMLElement.style.width = `${player1.health}%`;
+    gsap.to("#player1HealthBar", {
+      width: `${player1.health}%`,
+    });
   }
 
   if (player2.isAttacking && player2.currentFrame === 2) {
