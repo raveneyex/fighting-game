@@ -145,9 +145,9 @@ function animate() {
   } else {
     player2.switchSprite("idle");
   }
-  if (player1.velocity.y < 0) {
+  if (player2.velocity.y < 0) {
     player2.switchSprite("jump");
-  } else if (player1.velocity.y > 0) {
+  } else if (player2.velocity.y > 0) {
     player2.switchSprite("fall");
   }
 
