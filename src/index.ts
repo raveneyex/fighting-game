@@ -64,7 +64,7 @@ const player2 = new Fighter({
   imageSrc: player1Assets.idle.imageSrc,
   frames: player1Assets.idle.frames,
   position: {
-    x: 700,
+    x: -700,
     y: 0,
   },
   canvas,
@@ -77,12 +77,13 @@ const player2 = new Fighter({
   sprites: player1Assets,
   attackBox: {
     offset: {
-      x: 80,
+      x: 1540,
       y: 120,
     },
     width: 100,
     height: 50,
   },
+  flipped: true,
 });
 
 const keys = {
@@ -150,13 +151,13 @@ function animate() {
   }
 
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
-    player2.velocity.x = -5;
+    player2.velocity.x = 5;
     player2.switchSprite("run");
   } else if (
     keys.ArrowRight.pressed &&
     player2.lastKey === ControlKeys.ArrowRight
   ) {
-    player2.velocity.x = 5;
+    player2.velocity.x = -5;
     player2.switchSprite("run");
   } else {
     player2.switchSprite("idle");

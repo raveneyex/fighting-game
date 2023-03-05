@@ -9,6 +9,7 @@ export interface FighterConstructor extends SpriteConstructor {
   width: number;
   height: number;
   attackBox: AttackBox;
+  flipped?: boolean;
 }
 
 export default class Fighter extends Sprite {
@@ -36,6 +37,7 @@ export default class Fighter extends Sprite {
     width,
     height,
     attackBox,
+    flipped = false,
   }: FighterConstructor) {
     super({
       position,
@@ -45,6 +47,7 @@ export default class Fighter extends Sprite {
       framesHold,
       imageSrc,
       frames,
+      flipped,
     });
     this.position = position;
     this.velocity = velocity;
