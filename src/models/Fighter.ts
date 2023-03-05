@@ -9,7 +9,6 @@ export interface FighterConstructor extends SpriteConstructor {
   width: number;
   height: number;
   attackBox: AttackBox;
-  flipped?: boolean;
 }
 
 export default class Fighter extends Sprite {
@@ -25,19 +24,18 @@ export default class Fighter extends Sprite {
 
   constructor({
     position,
-    velocity = { x: 0, y: 0 },
     canvas,
     color,
     offset,
     imageSrc,
-    frames = 1,
-    scale = 1,
-    framesHold = 1,
     sprites,
     width,
     height,
     attackBox,
-    flipped = false,
+    frames = 1,
+    scale = 1,
+    framesHold = 1,
+    velocity = { x: 0, y: 0 },
   }: FighterConstructor) {
     super({
       position,
@@ -47,7 +45,6 @@ export default class Fighter extends Sprite {
       framesHold,
       imageSrc,
       frames,
-      flipped,
     });
     this.position = position;
     this.velocity = velocity;
@@ -99,7 +96,7 @@ export default class Fighter extends Sprite {
       this.canvas.height - 96
     ) {
       this.velocity.y = 0;
-      this.position.y = 258;
+      // this.position.y = 258;
     } else {
       this.velocity.y += GRAVITY;
     }

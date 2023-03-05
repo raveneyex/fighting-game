@@ -6,7 +6,7 @@ import "./style.css";
 import * as backgroundImageSrc from "./assets/background.png";
 import * as shopImageSrc from "./assets/shop.png";
 import { player1Assets } from "./assets/player1/";
-// import { player2Assets } from "./assets/player2";
+import { player2Assets } from "./assets/player2";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -32,8 +32,8 @@ const shop = new Sprite({
 });
 
 const player1 = new Fighter({
-  width: 320,
-  height: 222,
+  width: 50,
+  height: 150,
   imageSrc: player1Assets.idle.imageSrc,
   frames: player1Assets.idle.frames,
   position: {
@@ -42,48 +42,47 @@ const player1 = new Fighter({
   },
   canvas,
   offset: {
-    x: 126,
-    y: -12,
+    x: 151,
+    y: 96,
   },
   framesHold: 5,
   scale: 2,
   sprites: player1Assets,
   attackBox: {
     offset: {
-      x: 80,
-      y: 120,
+      x: 100,
+      y: 60,
     },
-    width: 100,
+    width: 120,
     height: 50,
   },
 });
 
 const player2 = new Fighter({
-  width: 320,
-  height: 222,
-  imageSrc: player1Assets.idle.imageSrc,
-  frames: player1Assets.idle.frames,
+  width: 50,
+  height: 150,
+  imageSrc: player2Assets.idle.imageSrc,
+  frames: player2Assets.idle.frames,
   position: {
-    x: -700,
+    x: 624,
     y: 0,
   },
   canvas,
   offset: {
-    x: 126,
-    y: -12,
+    x: -160,
+    y: 106,
   },
   framesHold: 5,
   scale: 2,
-  sprites: player1Assets,
+  sprites: player2Assets,
   attackBox: {
     offset: {
-      x: 1540,
-      y: 120,
+      x: 190,
+      y: 60,
     },
-    width: 100,
+    width: 120,
     height: 50,
   },
-  flipped: true,
 });
 
 const keys = {
@@ -151,13 +150,13 @@ function animate() {
   }
 
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
-    player2.velocity.x = 5;
+    player2.velocity.x = -5;
     player2.switchSprite("run");
   } else if (
     keys.ArrowRight.pressed &&
     player2.lastKey === ControlKeys.ArrowRight
   ) {
-    player2.velocity.x = -5;
+    player2.velocity.x = 5;
     player2.switchSprite("run");
   } else {
     player2.switchSprite("idle");

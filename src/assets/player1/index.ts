@@ -4,7 +4,7 @@ import * as idle from "./Idle.png";
 import * as run from "./Run.png";
 import * as jump from "./Jump.png";
 import * as fall from "./Fall.png";
-import * as attack from "./Attack3.png";
+import * as attack from "./Attack1.png";
 
 export const player1Assets: SpriteListing = {
   idle: {
@@ -25,6 +25,6 @@ export const player1Assets: SpriteListing = {
   },
   attack: {
     imageSrc: attack as unknown as string,
-    frames: 4,
+    frames: 6,
   },
 };

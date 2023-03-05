@@ -9,7 +9,7 @@ import * as attack from "./Attack2.png";
 export const player2Assets: SpriteListing = {
   idle: {
     imageSrc: idle as unknown as string,
-    frames: 8,
+    frames: 4,
   },
   run: {
     imageSrc: run as unknown as string,
@@ -25,6 +25,6 @@ export const player2Assets: SpriteListing = {
   },
   attack: {
     imageSrc: attack as unknown as string,
-    frames: 6,
+    frames: 4,
   },
 };
