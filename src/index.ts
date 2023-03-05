@@ -4,6 +4,7 @@ import { detectCollition, determineWinner } from "./utils/utils";
 
 import "./style.css";
 import * as backgroundImageSrc from "./assets/background.png";
+import * as shopImageSrc from "./assets/shop.png";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -12,11 +13,21 @@ canvas.width = 1024;
 canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
+debugger;
 
 const background = new Sprite({
   position: { x: 0, y: 0 },
   imageSrc: backgroundImageSrc as unknown as string,
   canvas,
+});
+
+const shop = new Sprite({
+  position: { x: 610, y: 160 },
+  imageSrc: shopImageSrc as unknown as string,
+  canvas,
+  scale: 2.5,
+  frames: 6,
+  framesHold: 5,
 });
 
 const player1 = new Fighter({
@@ -94,6 +105,8 @@ function animate() {
   c.fillStyle = "black";
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
+  shop.update();
+
   player1.update();
   player2.update();
 

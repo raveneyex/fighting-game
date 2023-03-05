@@ -1,35 +1,73 @@
-import { GRAVITY } from "../utils/constants";
-import { AttackBox, ControlKey, Coordinate2D } from "./types";
+import { Coordinate2D } from "./types";
 
 interface SpriteConstructor {
   position: Coordinate2D;
   canvas: HTMLCanvasElement;
   imageSrc: string;
+  scale?: number;
+  frames?: number;
+  framesHold?: number;
 }
 
 export default class Sprite {
+  scale: number;
+  frames: number;
+  frameWidth: number;
+  currentFrame: number;
+  framesElapsed: number;
+  framesHold: number;
   position: Coordinate2D;
-  height: number;
-  width: number;
-  canvas: HTMLCanvasElement;
   drawingContext: CanvasRenderingContext2D;
   image: HTMLImageElement;
 
-  constructor({ position, canvas, imageSrc }: SpriteConstructor) {
+  constructor({
+    position,
+    canvas,
+    imageSrc,
+    scale = 1,
+    frames = 1,
+    framesHold = 1,
+  }: SpriteConstructor) {
     this.position = position;
-    this.canvas = canvas;
     this.drawingContext = canvas.getContext("2d");
-    this.height = 250;
-    this.width = 50;
     this.image = new Image();
     this.image.src = imageSrc;
+    this.scale = scale;
+    this.frames = frames;
+    this.currentFrame = 0;
+    this.frameWidth = this.image.width / this.frames;
+    this.framesElapsed = 0;
+    this.framesHold = framesHold;
   }
 
-  public draw() {
-    this.drawingContext.drawImage(this.image, this.position.x, this.position.y);
+  draw() {
+    this.drawingContext.drawImage(
+      this.image, // the loaded image file
+      this.currentFrame * this.frameWidth, // X location of viewport
+      0, // Y location of viewport
+      this.frameWidth, // Width of viewport
+      this.image.height, // Height of viewport
+      this.position.x, // X position of image in canvas
+      this.position.y, // Y position of image in canvas
+      this.frameWidth * this.scale, // Width of image in canvas
+      this.image.height * this.scale // Height of image in canvas
+    );
+  }
+
+  moveFrame() {
+    this.framesElapsed++;
+
+    if (this.framesElapsed % this.framesHold === 0) {
+      if (this.currentFrame < this.frames - 1) {
+        this.currentFrame++;
+      } else {
+        this.currentFrame = 0;
+      }
+    }
   }
 
   public update() {
     this.draw();
+    this.moveFrame();
   }
 }
