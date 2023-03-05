@@ -3,12 +3,13 @@ import gsap from "gsap";
 import { Fighter, Sprite } from "./models/";
 import { ControlKeys } from "./models/types";
 import { detectCollition, determineWinner } from "./utils/utils";
-
-import "./style.css";
-import * as backgroundImageSrc from "./assets/background.png";
-import * as shopImageSrc from "./assets/shop.png";
 import { player1Assets } from "./assets/player1/";
 import { player2Assets } from "./assets/player2";
+
+import * as backgroundImageSrc from "./assets/background.png";
+import * as shopImageSrc from "./assets/shop.png";
+
+import "./style.css";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -108,7 +109,7 @@ const keys = {
   },
 };
 
-let timer = 10;
+let timer = 60;
 let timerId: number;
 
 function decreaseTimer() {
@@ -129,6 +130,9 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
   shop.update();
+
+  c.fillStyle = "rgba(255, 255, 255, 0.2)";
+  c.fillRect(0, 0, canvas.width, canvas.height);
 
   player1.update();
   player2.update();
