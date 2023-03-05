@@ -1,21 +1,17 @@
 import { GRAVITY } from "../utils/constants";
+import Sprite, { SpriteConstructor } from "./sprite";
 import { AttackBox, ControlKey, Coordinate2D } from "./types";
 
-interface FighterConstructor {
-  position: Coordinate2D;
+export interface FighterConstructor extends SpriteConstructor {
   velocity: Coordinate2D;
-  canvas: HTMLCanvasElement;
   color?: string;
   offset: Coordinate2D;
 }
 
-export default class Fighter {
-  position: Coordinate2D;
+export default class Fighter extends Sprite {
   velocity: Coordinate2D;
   height: number;
   width: number;
-  canvas: HTMLCanvasElement;
-  drawingContext: CanvasRenderingContext2D;
   lastKey: ControlKey;
   attackBox: AttackBox;
   color: string;
@@ -28,10 +24,14 @@ export default class Fighter {
     canvas,
     color,
     offset,
+    imageSrc,
+    scale = 1,
+    frames = 1,
+    framesHold = 1,
   }: FighterConstructor) {
+    super({ position, canvas, imageSrc, scale, frames, framesHold });
     this.position = position;
     this.velocity = velocity;
-    this.canvas = canvas;
     this.drawingContext = canvas.getContext("2d");
     this.height = 250;
     this.width = 50;
@@ -50,13 +50,14 @@ export default class Fighter {
   }
 
   public draw() {
-    this.drawingContext.fillStyle = this.color;
-    this.drawingContext.fillRect(
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    );
+    super.draw();
+    // this.drawingContext.fillStyle = this.color;
+    // this.drawingContext.fillRect(
+    //   this.position.x,
+    //   this.position.y,
+    //   this.width,
+    //   this.height
+    // );
     if (this.isAttacking) {
       this.drawingContext.fillStyle = "gray";
       this.drawingContext.fillRect(

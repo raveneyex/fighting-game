@@ -1,6 +1,6 @@
 import { Coordinate2D } from "./types";
 
-interface SpriteConstructor {
+export interface SpriteConstructor {
   position: Coordinate2D;
   canvas: HTMLCanvasElement;
   imageSrc: string;
@@ -17,6 +17,7 @@ export default class Sprite {
   framesElapsed: number;
   framesHold: number;
   position: Coordinate2D;
+  canvas: HTMLCanvasElement;
   drawingContext: CanvasRenderingContext2D;
   image: HTMLImageElement;
 
@@ -28,6 +29,7 @@ export default class Sprite {
     frames = 1,
     framesHold = 1,
   }: SpriteConstructor) {
+    this.canvas = canvas;
     this.position = position;
     this.drawingContext = canvas.getContext("2d");
     this.image = new Image();

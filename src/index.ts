@@ -5,6 +5,7 @@ import { detectCollition, determineWinner } from "./utils/utils";
 import "./style.css";
 import * as backgroundImageSrc from "./assets/background.png";
 import * as shopImageSrc from "./assets/shop.png";
+import * as player1Idle from "./assets/player1/Idle.png";
 
 const canvas = <HTMLCanvasElement>document.querySelector("#canvas");
 const c: CanvasRenderingContext2D = canvas.getContext("2d");
@@ -31,6 +32,7 @@ const shop = new Sprite({
 });
 
 const player1 = new Fighter({
+  imageSrc: player1Idle as unknown as string,
   position: {
     x: 224,
     y: 0,
@@ -45,9 +47,12 @@ const player1 = new Fighter({
     x: 0,
     y: 0,
   },
+  frames: 8,
+  scale: 2.4,
 });
 
 const player2 = new Fighter({
+  imageSrc: player1Idle as unknown as string,
   position: {
     x: 800,
     y: 50,
@@ -62,6 +67,7 @@ const player2 = new Fighter({
     x: -50,
     y: 0,
   },
+  frames: 8,
 });
 
 const keys = {
