@@ -3,6 +3,13 @@
   font-family: "Press Start 2P", cursive;
 }
 
+.main {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .container {
   position: relative;
   display: inline-block;
