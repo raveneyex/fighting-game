@@ -152,10 +152,7 @@ function animate() {
   if (keys.ArrowLeft.pressed && player2.lastKey === ControlKeys.ArrowLeft) {
     player2.velocity.x = -5;
     player2.switchSprite("run");
-  } else if (
-    keys.ArrowRight.pressed &&
-    player2.lastKey === ControlKeys.ArrowRight
-  ) {
+  } else if (keys.ArrowRight.pressed && player2.lastKey === ControlKeys.ArrowRight) {
     player2.velocity.x = 5;
     player2.switchSprite("run");
   } else {
@@ -167,22 +164,29 @@ function animate() {
     player2.switchSprite("fall");
   }
 
-  if (detectCollition(player1, player2) && player1.isAttacking) {
+  if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
     console.log("Player 1 hit");
     player1.isAttacking = false;
+    player2.takeHit();
     player2.health -= 20;
-    const player2HealthHTMLElement: HTMLDivElement =
-      document.querySelector("#player2HealthBar");
+    const player2HealthHTMLElement: HTMLDivElement = document.querySelector("#player2HealthBar");
     player2HealthHTMLElement.style.width = `${player2.health}%`;
   }
 
-  if (detectCollition(player2, player1) && player2.isAttacking) {
+  if (player1.isAttacking && player1.currentFrame === 4) {
+    player1.isAttacking = false;
+  }
+
+  if (detectCollition(player2, player1) && player2.isAttacking && player2.currentFrame === 2) {
     console.log("Player 2 hit");
     player2.isAttacking = false;
-    player1.health -= 20;
-    const player1HealthHTMLElement: HTMLDivElement =
-      document.querySelector("#player1HealthBar");
+    player1.takeHit();
+    const player1HealthHTMLElement: HTMLDivElement = document.querySelector("#player1HealthBar");
     player1HealthHTMLElement.style.width = `${player1.health}%`;
+  }
+
+  if (player2.isAttacking && player2.currentFrame === 2) {
+    player2.isAttacking = false;
   }
 }
 decreaseTimer();

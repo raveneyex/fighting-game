@@ -91,10 +91,7 @@ export default class Fighter extends Sprite {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    if (
-      this.position.y + this.height + this.velocity.y >=
-      this.canvas.height - 96
-    ) {
+    if (this.position.y + this.height + this.velocity.y >= this.canvas.height - 96) {
       this.velocity.y = 0;
       this.position.y = 330;
     } else {
@@ -105,26 +102,19 @@ export default class Fighter extends Sprite {
   public attack() {
     this.switchSprite("attack");
     this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
   }
 
-  public draw() {
-    super.draw();
-    // this.drawingContext.fillRect(
-    //   this.position.x - this.offset.x,
-    //   this.position.y - this.offset.y,
-    //   this.width,
-    //   this.height
-    // );
+  public takeHit() {
+    this.switchSprite("hit");
+    this.health -= 20;
   }
 
   public switchSprite(sprite: string) {
-    if (
-      this.image === this.sprites.attack.image &&
-      this.currentFrame < this.sprites.attack.frames - 1
-    ) {
+    if (this.image === this.sprites.attack.image && this.currentFrame < this.sprites.attack.frames - 1) {
+      return;
+    }
+
+    if (this.image === this.sprites.hit.image && this.currentFrame < this.sprites.hit.frames - 1) {
       return;
     }
 
