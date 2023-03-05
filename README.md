@@ -22,4 +22,14 @@ It uses the following assets:
 - gsap
 - prettier
 
-Run `yarn install && yarn start` to execute in dev mode.
+Run `yarn start` to execute in dev mode; use `yarn build` to create a bundle.
+
+## Dedications
+
+I dedicate this little app to:
+
+1. The _God of Magick_, in whatever form and name he might take. Hail, Hermes!
+2. The _Prince of Darkness_, in whatever form and name he might take. Hail, _Horned Lord_!
+3. Myself, and the Black Flame that burns inside me and makes it possible for me to get inspired and do magick.
+
+[![The RavenEyex Sigil](./raveneyex.png)](https://twitter.com/HumoBinario)
