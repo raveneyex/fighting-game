@@ -18,13 +18,13 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 
 const background = new Sprite({
   position: { x: 0, y: 0 },
-  imageSrc: backgroundImageSrc as unknown as string,
+  imageSrc: backgroundImageSrc,
   canvas,
 });
 
 const shop = new Sprite({
   position: { x: 610, y: 160 },
-  imageSrc: shopImageSrc as unknown as string,
+  imageSrc: shopImageSrc,
   canvas,
   scale: 2.5,
   frames: 6,

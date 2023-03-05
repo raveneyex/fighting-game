@@ -68,6 +68,11 @@ module.exports = {
         },
       },
       {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+        exclude: /node_modules/,
+      },
+      {
         test: /\.json5$/i,
         type: "json",
         parser: {
