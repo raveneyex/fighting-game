@@ -12,7 +12,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "fuck you",
+      title: "f..k you by RavenEyex",
       template: "./src/index.html",
     }),
   ],

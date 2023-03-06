@@ -3,11 +3,21 @@
   font-family: "Press Start 2P", cursive;
 }
 
-.main {
+body {
   background-color: black;
+}
+
+.game {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mainTitle {
+  text-align: center;
+  color: white;
 }
 
 .legend {

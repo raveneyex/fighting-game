@@ -7,47 +7,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
   </head>
   <body class="main">
-    <div class="legend player1Legend">
-      <h2 class="legendTitle">Player 1 Controls</h2>
-      <div class="legendContent">
-        <p>Left: a</p>
-        <p>Right: d</p>
-        <p>Jump: w</p>
-        <p>Attack: space</p>
-      </div>
-    </div>
-    <div class="container">
-      <div class="data">
-        <!-- Player 1 Health -->
-        <div class="healthBarContainer player1">
-          <div class="healthBar"></div>
-          <div id="player1HealthBar" class="filler"></div>
-        </div>
-
-        <!-- Timer -->
-        <div id="timer">10</div>
-
-        <!-- Player 2 Health -->
-        <div class="healthBarContainer player2">
-          <div class="healthBar"></div>
-          <div id="player2HealthBar" class="filler"></div>
+    <h1 class="mainTitle">Fighting Game – by <a href="https://github.com/raveneyex/" target="_blank">@raveneyex</a></h1>
+    <div class="game">
+      <div class="legend player1Legend">
+        <h2 class="legendTitle">Player 1 Controls</h2>
+        <div class="legendContent">
+          <p>Left: a</p>
+          <p>Right: d</p>
+          <p>Jump: w</p>
+          <p>Attack: space</p>
         </div>
       </div>
+      <div class="container">
+        <div class="data">
+          <!-- Player 1 Health -->
+          <div class="healthBarContainer player1">
+            <div class="healthBar"></div>
+            <div id="player1HealthBar" class="filler"></div>
+          </div>
 
-      <div class="message" id="message">Tie</div>
-      <div class="message" id="gameButtonContainer">
-        <button class="gameButton" id="startGame">Start Game</button>
+          <!-- Timer -->
+          <div id="timer">10</div>
+
+          <!-- Player 2 Health -->
+          <div class="healthBarContainer player2">
+            <div class="healthBar"></div>
+            <div id="player2HealthBar" class="filler"></div>
+          </div>
+        </div>
+
+        <div class="message" id="message">Tie</div>
+        <div class="message" id="gameButtonContainer">
+          <button class="gameButton" id="startGame">Start Game</button>
+        </div>
+
+        <canvas id="canvas"></canvas>
       </div>
-
-      <canvas id="canvas"></canvas>
-    </div>
-    <div class="legend player2Legend">
-      <h2 class="legendTitle">Player 2 Controls</h2>
-      <div class="legendContent">
-        <p>Left: ←</p>
-        <p>Right: →</p>
-        <p>Jump: ↑</p>
-        <p>Attack: ↓</p>
+      <div class="legend player2Legend">
+        <h2 class="legendTitle">Player 2 Controls</h2>
+        <div class="legendContent">
+          <p>Left: ←</p>
+          <p>Right: →</p>
+          <p>Jump: ↑</p>
+          <p>Attack: ↓</p>
+        </div>
       </div>
     </div>
   </body>
