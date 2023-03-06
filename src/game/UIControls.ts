@@ -20,7 +20,7 @@ export class UIControls {
   private timerDisplay: HTMLDivElement;
   private messageDisplay: HTMLDivElement;
 
-  private constructor() {
+  private constructor(document: Document) {
     this.timerDisplay = <HTMLDivElement>document.querySelector(TIMER_SELECTOR);
     this.messageDisplay = <HTMLDivElement>document.querySelector(MESSAGE_SELECTOR);
     this.messageDisplay.style.display = "none";
@@ -33,9 +33,9 @@ export class UIControls {
     this._renderingContext = canvas.getContext("2d");
   }
 
-  static getInstance(): UIControls {
+  static getInstance(document: Document): UIControls {
     if (!UIControls.instance) {
-      UIControls.instance = new UIControls();
+      UIControls.instance = new UIControls(document);
     }
     return UIControls.instance;
   }

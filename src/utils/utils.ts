@@ -8,17 +8,3 @@ export function detectCollition(player1: Fighter, player2: Fighter) {
     player1.attackBox.position.y <= player2.position.y + player2.height
   );
 }
-
-export function determineWinner(player1: Fighter, player2: Fighter, timerId: number) {
-  clearTimeout(timerId);
-  const displayText: HTMLDivElement = document.querySelector("#message");
-
-  displayText.style.display = "flex";
-  if (player1.health === player2.health) {
-    displayText.innerHTML = "It's a tie!";
-  } else if (player1.health > player2.health) {
-    displayText.innerHTML = "Player 1 Wins";
-  } else if (player1.health < player2.health) {
-    displayText.innerHTML = "Player 2 Wins";
-  }
-}

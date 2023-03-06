@@ -31,17 +31,17 @@ export class Game {
   private player1: Fighter;
   private player2: Fighter;
 
-  private constructor() {
-    this.uiControls = UIControls.getInstance();
+  private constructor(window: Window, document: Document) {
+    this.uiControls = UIControls.getInstance(document);
     this.initRenderingContext();
 
     window.addEventListener(KEYDOWN, this.keyDownCallback.bind(this));
     window.addEventListener(KEYUP, this.keyUpCallback.bind(this));
   }
 
-  static getInstance(): Game {
+  static getInstance(window: Window, document: Document): Game {
     if (!Game.instance) {
-      Game.instance = new Game();
+      Game.instance = new Game(window, document);
     }
 
     return Game.instance;
