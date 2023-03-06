@@ -3,11 +3,7 @@ import Sprite, { SpriteConstructor } from "./sprite";
 import { AttackBox, ControlKey, Coordinate2D, SpriteListing } from "./types";
 
 export interface FighterConstructor extends SpriteConstructor {
-  velocity?: Coordinate2D;
-  color?: string;
   sprites?: SpriteListing;
-  width: number;
-  height: number;
   attackBox: AttackBox;
 }
 
@@ -22,22 +18,17 @@ export default class Fighter extends Sprite {
   health: number;
   sprites: SpriteListing;
   isDead: boolean;
-  isJumping: boolean;
 
   constructor({
     position,
     canvas,
-    color,
     offset,
     imageSrc,
     sprites,
-    width,
-    height,
     attackBox,
     frames = 1,
-    scale = 1,
-    framesHold = 1,
-    velocity = { x: 0, y: 0 },
+    scale = 2.5,
+    framesHold = 5,
   }: FighterConstructor) {
     super({
       position,
@@ -48,12 +39,13 @@ export default class Fighter extends Sprite {
       imageSrc,
       frames,
     });
-    this.isDead = false;
-    this.position = position;
-    this.velocity = velocity;
     this.drawingContext = canvas.getContext("2d");
-    this.height = height;
-    this.width = width;
+
+    this.velocity = { x: 0, y: 0 };
+    this.height = 150;
+    this.width = 50;
+    this.health = 100;
+
     this.attackBox = {
       position: {
         x: this.position.x,
@@ -63,12 +55,11 @@ export default class Fighter extends Sprite {
       height: attackBox.height,
       offset: attackBox.offset,
     };
-    this.color = color ?? "red";
+
     this.isAttacking = false;
-    this.health = 100;
-    this.sprites = sprites;
     this.isDead = false;
-    this.isJumping = false;
+
+    this.sprites = sprites;
     this.initSpriteImages();
   }
 
@@ -112,13 +103,13 @@ export default class Fighter extends Sprite {
   }
 
   public moveLeft() {
-    this.velocity.x = -5;
     this.switchSprite("run");
+    this.velocity.x = -5;
   }
 
   public moveRight() {
-    this.velocity.x = 5;
     this.switchSprite("run");
+    this.velocity.x = 5;
   }
 
   public takeHit() {
@@ -132,7 +123,6 @@ export default class Fighter extends Sprite {
 
   public jump() {
     this.velocity.y = -20;
-    this.switchSprite("jump");
   }
 
   public switchSprite(sprite: string) {
