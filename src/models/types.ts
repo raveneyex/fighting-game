@@ -42,3 +42,11 @@ export type ControlKey =
   | ControlKeys.ArrowUp
   | ControlKeys.ArrowDown
   | ControlKeys.space;
+
+interface KeyTracker {
+  pressed: boolean;
+}
+
+export interface KeysTracker {
+  [name: string]: KeyTracker;
+}

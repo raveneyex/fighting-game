@@ -1,6 +1,11 @@
-import { Fighter, Sprite } from "./models";
+import gsap from "gsap";
+
+import { ControlKeys, Fighter, KeysTracker, Sprite } from "./models";
+import { detectCollition } from "./utils/utils";
+
 import { player1Assets } from "./assets/player1/";
 import { player2Assets } from "./assets/player2";
+
 import * as backgroundImageSrc from "./assets/background.png";
 import * as shopImageSrc from "./assets/shop.png";
 
@@ -18,9 +23,13 @@ export class Game {
   private timer: number;
   private timerId: number;
 
+  // Keys control
+  private keys: KeysTracker;
+
   // Background elements;
   private background: Sprite;
   private shop: Sprite;
+
   // Players
   private player1: Fighter;
   private player2: Fighter;
@@ -29,7 +38,7 @@ export class Game {
     this.getRenderingContext();
     this.getHTMLElements();
     this.initBackground();
-    this.initPlayers();
+    this.initKeyListeners();
   }
 
   static getInstance(): Game {
@@ -76,8 +85,6 @@ export class Game {
 
   private initPlayers(): void {
     this.player1 = new Fighter({
-      imageSrc: player1Assets.idle.imageSrc,
-      frames: player1Assets.idle.frames,
       position: {
         x: 50,
         y: 0,
@@ -99,8 +106,6 @@ export class Game {
     });
 
     this.player2 = new Fighter({
-      imageSrc: player2Assets.idle.imageSrc,
-      frames: player2Assets.idle.frames,
       position: {
         x: 900,
         y: 100,
@@ -120,6 +125,82 @@ export class Game {
         height: 50,
       },
     });
+  }
+
+  private keyDownCallback(event: KeyboardEvent): void {
+    const { key } = event;
+
+    if (!this.player1.isDead) {
+      switch (key) {
+        case ControlKeys.d:
+        case ControlKeys.a:
+          this.keys[key].pressed = true;
+          this.player1.lastKey = key;
+          break;
+        case ControlKeys.w:
+          this.player1.jump();
+          break;
+        case ControlKeys.space:
+          this.player1.attack();
+          break;
+      }
+    }
+
+    if (!this.player2.isDead) {
+      switch (key) {
+        case ControlKeys.ArrowRight:
+        case ControlKeys.ArrowLeft:
+          this.keys[key].pressed = true;
+          this.player2.lastKey = key;
+          break;
+        case ControlKeys.ArrowUp:
+          this.player2.jump();
+          break;
+        case ControlKeys.ArrowDown:
+          this.player2.attack();
+          break;
+      }
+    }
+  }
+
+  private keyUpCallback(event: KeyboardEvent): void {
+    const { key } = event;
+    switch (key) {
+      case ControlKeys.d:
+      case ControlKeys.a:
+      case ControlKeys.ArrowRight:
+      case ControlKeys.ArrowLeft:
+        this.keys[key].pressed = false;
+        break;
+    }
+  }
+
+  private initKeyListeners(): void {
+    window.addEventListener("keydown", this.keyDownCallback.bind(this));
+    window.addEventListener("keyup", this.keyUpCallback.bind(this));
+  }
+
+  private initKeyTracker(): void {
+    this.keys = {
+      a: {
+        pressed: false,
+      },
+      d: {
+        pressed: false,
+      },
+      w: {
+        pressed: false,
+      },
+      ArrowRight: {
+        pressed: false,
+      },
+      ArrowLeft: {
+        pressed: false,
+      },
+      ArrowUp: {
+        pressed: false,
+      },
+    };
   }
 
   private updateTimer(value: string): void {
@@ -155,14 +236,96 @@ export class Game {
     }
   }
 
-  private animate(): void {
-    window.requestAnimationFrame(this.animate);
-    this.renderingContext.fillStyle = "black";
+  private paintBackground(fillStyle: string) {
+    this.renderingContext.fillStyle = fillStyle;
     this.renderingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  private player1Updates() {
+    this.player1.update();
+    this.player1.velocity.x = 0;
+
+    // Move
+    if (this.keys.a.pressed && this.player1.lastKey === ControlKeys.a) {
+      this.player1.moveLeft();
+    } else if (this.keys.d.pressed && this.player1.lastKey === ControlKeys.d) {
+      this.player1.moveRight();
+    } else {
+      this.player1.switchSprite("idle");
+    }
+
+    // Jump
+    if (this.player1.velocity.y < 0) {
+      this.player1.switchSprite("jump");
+    } else if (this.player1.velocity.y > 0) {
+      this.player1.switchSprite("fall");
+    }
+
+    // Attack
+    if (detectCollition(this.player1, this.player2) && this.player1.isAttacking && this.player1.currentFrame === 4) {
+      this.player1.isAttacking = false;
+      this.player2.takeHit();
+      gsap.to("#player2HealthBar", {
+        width: `${this.player2.health}%`,
+      });
+    }
+    if (this.player1.isAttacking && this.player1.currentFrame === 4) {
+      this.player1.isAttacking = false;
+    }
+  }
+
+  private player2Updates() {
+    this.player2.update();
+    this.player2.velocity.x = 0;
+
+    // Move
+    if (this.keys.ArrowLeft.pressed && this.player2.lastKey === ControlKeys.ArrowLeft) {
+      this.player2.moveLeft();
+    } else if (this.keys.ArrowRight.pressed && this.player2.lastKey === ControlKeys.ArrowRight) {
+      this.player2.moveRight();
+    } else {
+      this.player2.switchSprite("idle");
+    }
+
+    // Jump
+    if (this.player2.velocity.y < 0) {
+      this.player2.switchSprite("jump");
+    } else if (this.player2.velocity.y > 0) {
+      this.player2.switchSprite("fall");
+    }
+
+    // Attack
+    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
+      this.player2.isAttacking = false;
+      this.player1.takeHit();
+      gsap.to("#player1HealthBar", {
+        width: `${this.player1.health}%`,
+      });
+    }
+    if (this.player2.isAttacking && this.player2.currentFrame === 2) {
+      this.player2.isAttacking = false;
+    }
+  }
+
+  private animate(): void {
+    window.requestAnimationFrame(this.animate.bind(this));
+
+    this.paintBackground("black");
+    this.background.update();
+    this.shop.update();
+    this.paintBackground("rgba(255, 255, 255, 0.2)");
+    this.player1Updates();
+    this.player2Updates();
+
+    if (this.player1.health === 0 || this.player2.health === 0) {
+      this.determineWinner();
+    }
+  }
+
   public run(): void {
-    this.decreaseTimer();
+    this.initPlayers();
+    this.initKeyTracker();
     this.animate();
+    this.decreaseTimer();
   }
 }
