@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import { ControlKeys, Fighter, KeysTracker, Sprite, SpriteTypes } from "../models";
-import { detectCollition } from "../utils/utils";
+import { detectCollition, isMobile } from "../utils/utils";
 
 import { player1Assets } from "../assets/player1";
 import { player2Assets } from "../assets/player2";
@@ -56,26 +56,29 @@ export class Game {
   private isGameFinished: boolean;
 
   private constructor() {
-    const canvas = <HTMLCanvasElement>document.querySelector(CANVAS_SELECTOR);
-    canvas.width = 1024;
-    canvas.height = 576;
+    if (!isMobile()) {
+      const canvas = <HTMLCanvasElement>document.querySelector(CANVAS_SELECTOR);
+      canvas.width = 1024;
+      canvas.height = 576;
 
-    this._canvas = canvas;
-    this._renderingContext = canvas.getContext("2d");
+      this._canvas = canvas;
+      this._renderingContext = canvas.getContext("2d");
 
-    this.player1HealthBar = document.querySelector(PLAYER1_HEALTHBAR_SELECTOR);
-    this.player2HealthBar = document.querySelector(PLAYER2_HEALTHBAR_SELECTOR);
-    this.gameTimer = document.querySelector(TIMER_SELECTOR);
-    this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
-    this.startButton = document.querySelector(GAME_BUTTON_SELECTOR);
-    this.startButtonContainer = document.querySelector(GAME_BUTTON_CONTAINER_SELECTOR);
-    this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
+      this.player1HealthBar = document.querySelector(PLAYER1_HEALTHBAR_SELECTOR);
+      this.player2HealthBar = document.querySelector(PLAYER2_HEALTHBAR_SELECTOR);
+      this.gameTimer = document.querySelector(TIMER_SELECTOR);
+      this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
+      this.startButton = document.querySelector(GAME_BUTTON_SELECTOR);
+      this.startButtonContainer = document.querySelector(GAME_BUTTON_CONTAINER_SELECTOR);
+      this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
 
-    this.isGameFinished = false;
-    this.timer = 60;
+      this.isGameFinished = false;
+      this.timer = 60;
 
-    this.initRenderingContext();
-    this.initEventListeners();
+      this.initRenderingContext();
+      this.initEventListeners();
+    }
+    this.disableForMobile();
   }
 
   static getInstance(): Game {
@@ -402,5 +405,9 @@ export class Game {
     if (this.player1.health === 0 || this.player2.health === 0) {
       this.determineWinner();
     }
+  }
+
+  private disableForMobile() {
+    document.body.innerHTML = `<div class="noMobile">This game is only supported in Desktop browsers.</div>`;
   }
 }

@@ -5,6 +5,13 @@
 
 body {
   background-color: black;
+  color: white;
+}
+
+.noMobile {
+  color: white;
+  text-align: center;
+  padding: 100px 20px 0px 20px;
 }
 
 .game {
