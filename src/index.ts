@@ -35,18 +35,16 @@ const shop = new Sprite({
 });
 
 const player1 = new Fighter({
-  imageSrc: player1Assets.idle.imageSrc,
-  frames: player1Assets.idle.frames,
+  canvas,
+  sprites: player1Assets,
   position: {
     x: 50,
     y: 0,
   },
-  canvas,
   offset: {
     x: 215,
     y: 157,
   },
-  sprites: player1Assets,
   attackBox: {
     offset: {
       x: 100,
@@ -58,18 +56,16 @@ const player1 = new Fighter({
 });
 
 const player2 = new Fighter({
-  imageSrc: player2Assets.idle.imageSrc,
-  frames: player2Assets.idle.frames,
+  canvas,
+  sprites: player2Assets,
   position: {
     x: 900,
     y: 100,
   },
-  canvas,
   offset: {
     x: 215,
     y: 167,
   },
-  sprites: player2Assets,
   attackBox: {
     offset: {
       x: -170,

@@ -1,14 +1,14 @@
 import { Coordinate2D } from "./types";
 
-export interface SpriteConstructor {
-  position: Coordinate2D;
-  offset?: Coordinate2D;
+export type SpriteConstructor = {
   canvas: HTMLCanvasElement;
   imageSrc: string;
+  position: Coordinate2D;
+  offset?: Coordinate2D;
   scale?: number;
   frames?: number;
   framesHold?: number;
-}
+};
 
 export default class Sprite {
   scale: number;

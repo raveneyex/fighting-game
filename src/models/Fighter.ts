@@ -2,10 +2,10 @@ import { GRAVITY } from "../utils/constants";
 import Sprite, { SpriteConstructor } from "./sprite";
 import { AttackBox, ControlKey, Coordinate2D, SpriteListing } from "./types";
 
-export interface FighterConstructor extends SpriteConstructor {
-  sprites?: SpriteListing;
+type FighterConstructor = Omit<SpriteConstructor, "imageSrc"> & {
+  sprites: SpriteListing;
   attackBox: AttackBox;
-}
+};
 
 export default class Fighter extends Sprite {
   velocity: Coordinate2D;
@@ -19,17 +19,10 @@ export default class Fighter extends Sprite {
   sprites: SpriteListing;
   isDead: boolean;
 
-  constructor({
-    position,
-    canvas,
-    offset,
-    imageSrc,
-    sprites,
-    attackBox,
-    frames = 1,
-    scale = 2.5,
-    framesHold = 5,
-  }: FighterConstructor) {
+  constructor({ position, canvas, offset, sprites, attackBox, scale = 2.5, framesHold = 5 }: FighterConstructor) {
+    const imageSrc = sprites.idle.imageSrc;
+    const frames = sprites.idle.frames;
+
     super({
       position,
       canvas,
