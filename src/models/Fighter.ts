@@ -1,5 +1,5 @@
 import { GRAVITY } from "../utils/constants";
-import Sprite from "./sprite";
+import Sprite from "./Sprite";
 import { AttackBox, ControlKeys, Coordinate2D, FighterConstructor, SpriteListing, SpriteTypes } from "./types";
 
 export default class Fighter extends Sprite {
