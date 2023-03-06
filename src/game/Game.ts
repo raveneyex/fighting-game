@@ -1,3 +1,4 @@
+import gsap from "gsap";
 import { ControlKeys, Fighter, KeysTracker, Sprite, SpriteTypes } from "../models";
 import { detectCollition } from "../utils/utils";
 
@@ -6,15 +7,33 @@ import { player2Assets } from "../assets/player2";
 
 import * as backgroundImageSrc from "../assets/background.png";
 import * as shopImageSrc from "../assets/shop.png";
-import { KEYDOWN, KEYUP, PLAYER1_HEALTHBAR_SELECTOR, PLAYER2_HEALTHBAR_SELECTOR } from "../utils/constants";
-import { UIControls } from "./UIControls";
+import {
+  CANVAS_SELECTOR,
+  GAME_BUTTON_CONTAINER_SELECTOR,
+  GAME_BUTTON_SELECTOR,
+  KEYDOWN,
+  KEYUP,
+  MESSAGE_SELECTOR,
+  PLAYER1WINS,
+  PLAYER1_HEALTHBAR_SELECTOR,
+  PLAYER2WINS,
+  PLAYER2_HEALTHBAR_SELECTOR,
+  TIE_MESSAGE,
+  TIMER_SELECTOR,
+} from "../utils/constants";
 
 export class Game {
-  // Singleton instance
   private static instance: Game;
+  // DOM Elements
+  private _canvas: HTMLCanvasElement;
+  private _renderingContext: CanvasRenderingContext2D;
 
-  // UI Controls for DOM Elements
-  private uiControls: UIControls;
+  private messageDisplay: HTMLDivElement;
+  private player1HealthBar: HTMLDivElement;
+  private player2HealthBar: HTMLDivElement;
+  private gameTimer: HTMLDivElement;
+  private startButtonContainer: HTMLDivElement;
+  private startButton: HTMLButtonElement;
 
   // Timer
   private timer: number;
@@ -34,31 +53,87 @@ export class Game {
   private player1: Fighter;
   private player2: Fighter;
 
-  private constructor(window: Window, document: Document) {
-    this.uiControls = UIControls.getInstance(document);
+  private isGameFinished: boolean;
+
+  private constructor() {
+    const canvas = <HTMLCanvasElement>document.querySelector(CANVAS_SELECTOR);
+    canvas.width = 1024;
+    canvas.height = 576;
+
+    this._canvas = canvas;
+    this._renderingContext = canvas.getContext("2d");
+
+    this.player1HealthBar = document.querySelector(PLAYER1_HEALTHBAR_SELECTOR);
+    this.player2HealthBar = document.querySelector(PLAYER2_HEALTHBAR_SELECTOR);
+    this.gameTimer = document.querySelector(TIMER_SELECTOR);
+    this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
+    this.startButton = document.querySelector(GAME_BUTTON_SELECTOR);
+    this.startButtonContainer = document.querySelector(GAME_BUTTON_CONTAINER_SELECTOR);
+    this.messageDisplay = document.querySelector(MESSAGE_SELECTOR);
+
+    this.isGameFinished = false;
+    this.timer = 60;
+
     this.initRenderingContext();
-    this.uiControls.bindStart(this.run.bind(this));
+    this.initEventListeners();
   }
 
-  static getInstance(window: Window, document: Document): Game {
+  static getInstance(): Game {
     if (!Game.instance) {
-      Game.instance = new Game(window, document);
+      Game.instance = new Game();
     }
-
     return Game.instance;
   }
 
   get canvas(): HTMLCanvasElement {
-    return this.uiControls.canvas;
+    return this._canvas;
   }
 
   get renderingContext(): CanvasRenderingContext2D {
-    return this.uiControls.renderingContext;
+    return this._renderingContext;
+  }
+
+  run() {
+    if (this.isGameFinished) {
+      this.clear();
+    }
+
+    this.initKeyTracker();
+    this.initBackground();
+    this.initPlayers();
+    this.animate();
+    this.initTimer();
+  }
+
+  clear() {
+    this.player1HealthBar.style.width = `${100}%`;
+    this.player2HealthBar.style.width = `${100}%`;
+    this.timer = 60;
+    this.isGameFinished = false;
+
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
+    if (this.animationFrame) {
+      window.cancelAnimationFrame(this.animationFrame);
+    }
+
+    window.removeEventListener(KEYDOWN, this.keyDownCallback.bind(this));
+    window.removeEventListener(KEYUP, this.keyUpCallback.bind(this));
   }
 
   private initRenderingContext(): void {
     // Paint canvas black
     this.renderingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  private startGame(): void {
+    this.startButtonContainer.style.display = "none";
+    this.run();
+  }
+
+  private initEventListeners(): void {
+    this.startButton.addEventListener("click", this.startGame.bind(this));
   }
 
   private initBackground(): void {
@@ -196,11 +271,16 @@ export class Game {
     window.addEventListener(KEYUP, this.keyUpCallback.bind(this));
   }
 
+  private updateMessage(value: string): void {
+    this.messageDisplay.innerHTML = value;
+    this.messageDisplay.style.display = "flex";
+  }
+
   private initTimer(): void {
     if (this.timer > 0) {
       this.timerId = window.setTimeout(this.initTimer.bind(this), 1000);
       this.timer--;
-      this.uiControls.updateTimer(this.timer.toString());
+      this.gameTimer.innerHTML = this.timer.toString();
     }
 
     if (this.timer === 0) {
@@ -212,12 +292,18 @@ export class Game {
     clearTimeout(this.timerId);
 
     if (this.player1.health === this.player2.health) {
-      this.uiControls.declareTie();
+      this.updateMessage(TIE_MESSAGE);
     } else if (this.player1.health > this.player2.health) {
-      this.uiControls.player1Wins();
+      this.updateMessage(PLAYER1WINS);
     } else if (this.player1.health < this.player2.health) {
-      this.uiControls.player2Wins();
+      this.updateMessage(PLAYER2WINS);
     }
+
+    this.isGameFinished = true;
+    window.setTimeout(() => {
+      this.messageDisplay.style.display = "none";
+      this.startButtonContainer.style.display = "flex";
+    }, 2000);
   }
 
   private paintBackground(fillStyle: string) {
@@ -230,6 +316,18 @@ export class Game {
     this.background.update();
     this.shop.update();
     this.paintBackground("rgba(255, 255, 255, 0.2)");
+  }
+
+  private updatePlayer1Health(value: number): void {
+    gsap.to(PLAYER1_HEALTHBAR_SELECTOR, {
+      width: `${value}%`,
+    });
+  }
+
+  private updatePlayer2Health(value: number): void {
+    gsap.to(PLAYER2_HEALTHBAR_SELECTOR, {
+      width: `${value}%`,
+    });
   }
 
   private player1AnimationUpdates() {
@@ -256,7 +354,7 @@ export class Game {
     if (detectCollition(this.player1, this.player2) && this.player1.isAttacking && this.player1.currentFrame === 4) {
       this.player1.isAttacking = false;
       this.player2.takeHit();
-      this.uiControls.updatePlayer2Health(this.player2.health);
+      this.updatePlayer2Health(this.player2.health);
     }
     if (this.player1.isAttacking && this.player1.currentFrame === 4) {
       this.player1.isAttacking = false;
@@ -287,7 +385,7 @@ export class Game {
     if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
       this.player2.isAttacking = false;
       this.player1.takeHit();
-      this.uiControls.updatePlayer1Health(this.player1.health);
+      this.updatePlayer1Health(this.player1.health);
     }
     if (this.player2.isAttacking && this.player2.currentFrame === 2) {
       this.player2.isAttacking = false;
@@ -304,25 +402,5 @@ export class Game {
     if (this.player1.health === 0 || this.player2.health === 0) {
       this.determineWinner();
     }
-  }
-
-  private clear() {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
-    }
-    if (this.animationFrame) {
-      window.cancelAnimationFrame(this.animationFrame);
-    }
-  }
-
-  run(): void {
-    this.clear();
-    this.timer = 60;
-
-    this.initKeyTracker();
-    this.initBackground();
-    this.initPlayers();
-    this.animate();
-    this.initTimer();
   }
 }
