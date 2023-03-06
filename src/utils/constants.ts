@@ -7,5 +7,7 @@ export const PLAYER1WINS = "Player 1 Wins!";
 export const PLAYER2WINS = "Player 2 Wins!";
 export const PLAYER1_HEALTHBAR_SELECTOR = "#player1HealthBar";
 export const PLAYER2_HEALTHBAR_SELECTOR = "#player2HealthBar";
+export const GAME_BUTTON_CONTAINER_SELECTOR = "#gameButtonContainer";
+export const GAME_BUTTON_SELECTOR = "#startGame";
 export const KEYDOWN = "keydown";
 export const KEYUP = "keyup";

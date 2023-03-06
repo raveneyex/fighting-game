@@ -2,6 +2,8 @@ import gsap from "gsap";
 
 import {
   CANVAS_SELECTOR,
+  GAME_BUTTON_CONTAINER_SELECTOR,
+  GAME_BUTTON_SELECTOR,
   MESSAGE_SELECTOR,
   PLAYER1WINS,
   PLAYER1_HEALTHBAR_SELECTOR,
@@ -19,8 +21,12 @@ export class UIControls {
   private _renderingContext: CanvasRenderingContext2D;
   private timerDisplay: HTMLDivElement;
   private messageDisplay: HTMLDivElement;
+  private startButtonContainer: HTMLDivElement;
+  private startButton: HTMLButtonElement;
 
   private constructor(document: Document) {
+    this.startButton = <HTMLButtonElement>document.querySelector(GAME_BUTTON_SELECTOR);
+    this.startButtonContainer = <HTMLDivElement>document.querySelector(GAME_BUTTON_CONTAINER_SELECTOR);
     this.timerDisplay = <HTMLDivElement>document.querySelector(TIMER_SELECTOR);
     this.messageDisplay = <HTMLDivElement>document.querySelector(MESSAGE_SELECTOR);
     this.messageDisplay.style.display = "none";
@@ -51,6 +57,18 @@ export class UIControls {
   private updateMessage(value: string): void {
     this.messageDisplay.innerHTML = value;
     this.messageDisplay.style.display = "flex";
+
+    setTimeout(() => {
+      this.messageDisplay.style.display = "none";
+      this.startButtonContainer.style.display = "flex";
+    }, 2000);
+  }
+
+  bindStart(callback: () => {}) {
+    this.startButton.addEventListener("click", () => {
+      this.startButtonContainer.style.display = "none";
+      callback();
+    });
   }
 
   updateTimer(value: string): void {

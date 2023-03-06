@@ -20,6 +20,9 @@ export class Game {
   private timer: number;
   private timerId: number;
 
+  // Animation Frames
+  private animationFrame: number;
+
   // Keys control
   private keys: KeysTracker;
 
@@ -34,9 +37,7 @@ export class Game {
   private constructor(window: Window, document: Document) {
     this.uiControls = UIControls.getInstance(document);
     this.initRenderingContext();
-
-    window.addEventListener(KEYDOWN, this.keyDownCallback.bind(this));
-    window.addEventListener(KEYUP, this.keyUpCallback.bind(this));
+    this.uiControls.bindStart(this.run.bind(this));
   }
 
   static getInstance(window: Window, document: Document): Game {
@@ -190,6 +191,9 @@ export class Game {
         pressed: false,
       },
     };
+
+    window.addEventListener(KEYDOWN, this.keyDownCallback.bind(this));
+    window.addEventListener(KEYUP, this.keyUpCallback.bind(this));
   }
 
   private initTimer(): void {
@@ -291,7 +295,7 @@ export class Game {
   }
 
   private animate(): void {
-    window.requestAnimationFrame(this.animate.bind(this));
+    this.animationFrame = window.requestAnimationFrame(this.animate.bind(this));
 
     this.backgroundAnimationUpdates();
     this.player1AnimationUpdates();
@@ -302,7 +306,17 @@ export class Game {
     }
   }
 
+  private clear() {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
+    if (this.animationFrame) {
+      window.cancelAnimationFrame(this.animationFrame);
+    }
+  }
+
   run(): void {
+    this.clear();
     this.timer = 60;
 
     this.initKeyTracker();

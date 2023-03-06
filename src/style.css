@@ -114,3 +114,17 @@
   right: 0;
   left: 0;
 }
+
+#gameButtonContainer {
+  display: flex;
+}
+
+.gameButton {
+  background-image: url("./assets/texture.png");
+  background-size: contain;
+  width: 200px;
+  height: 100px;
+  font-size: 2rem;
+  color: white;
+  text-shadow: 2px 2px black;
+}
