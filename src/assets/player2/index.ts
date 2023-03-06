@@ -5,7 +5,7 @@ import * as run from "./Run.png";
 import * as jump from "./Jump.png";
 import * as fall from "./Fall.png";
 import * as attack from "./Attack2.png";
-import * as hit from "./Take hit.png";
+import * as hit from "./Take Hit.png";
 import * as death from "./Death.png";
 
 export const player2Assets: SpriteListing = {
