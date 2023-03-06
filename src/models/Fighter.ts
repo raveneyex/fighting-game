@@ -1,12 +1,12 @@
 import { GRAVITY } from "../utils/constants";
 import Sprite from "./sprite";
-import { AttackBox, ControlKey, Coordinate2D, FighterConstructor, SpriteListing } from "./types";
+import { AttackBox, ControlKeys, Coordinate2D, FighterConstructor, SpriteListing, SpriteTypes } from "./types";
 
 export default class Fighter extends Sprite {
   private _height: number;
   private _width: number;
   private _health: number;
-  private _lastKey: ControlKey;
+  private _lastKey: ControlKeys;
   private _isAttacking: boolean;
   private _isDead: boolean;
   private sprites: SpriteListing;
@@ -65,11 +65,11 @@ export default class Fighter extends Sprite {
     return this._height;
   }
 
-  get lastKey(): ControlKey {
+  get lastKey(): ControlKeys {
     return this._lastKey;
   }
 
-  set lastKey(value: ControlKey) {
+  set lastKey(value: ControlKeys) {
     this._lastKey = value;
   }
 
@@ -106,13 +106,6 @@ export default class Fighter extends Sprite {
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
 
-    // this.drawingContext.fillRect(
-    //   this.attackBox.position.x,
-    //   this.attackBox.position.y,
-    //   this.attackBox.width,
-    //   this.attackBox.height
-    // );
-
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
@@ -125,26 +118,26 @@ export default class Fighter extends Sprite {
   }
 
   attack() {
-    this.switchSprite("attack");
+    this.switchSprite(SpriteTypes.attack);
     this.isAttacking = true;
   }
 
   moveLeft() {
-    this.switchSprite("run");
+    this.switchSprite(SpriteTypes.run);
     this.velocity.x = -5;
   }
 
   moveRight() {
-    this.switchSprite("run");
+    this.switchSprite(SpriteTypes.run);
     this.velocity.x = 5;
   }
 
   takeHit() {
     this.health -= 20;
     if (this.health <= 0) {
-      this.switchSprite("death");
+      this.switchSprite(SpriteTypes.death);
     } else {
-      this.switchSprite("hit");
+      this.switchSprite(SpriteTypes.hit);
     }
   }
 
@@ -152,7 +145,7 @@ export default class Fighter extends Sprite {
     this.velocity.y = -20;
   }
 
-  switchSprite(sprite: string) {
+  switchSprite(sprite: SpriteTypes) {
     if (this.image === this.sprites.death.image) {
       if (this.currentFrame === this.sprites.death.frames - 1) {
         this.isDead = true;

@@ -1,4 +1,4 @@
-import { ControlKeys, Fighter, KeysTracker, Sprite } from "../models";
+import { ControlKeys, Fighter, KeysTracker, Sprite, SpriteTypes } from "../models";
 import { detectCollition } from "../utils/utils";
 
 import { player1Assets } from "../assets/player1";
@@ -238,14 +238,14 @@ export class Game {
     } else if (this.keys.d.pressed && this.player1.lastKey === ControlKeys.d) {
       this.player1.moveRight();
     } else {
-      this.player1.switchSprite("idle");
+      this.player1.switchSprite(SpriteTypes.idle);
     }
 
     // Jump
     if (this.player1.velocity.y < 0) {
-      this.player1.switchSprite("jump");
+      this.player1.switchSprite(SpriteTypes.jump);
     } else if (this.player1.velocity.y > 0) {
-      this.player1.switchSprite("fall");
+      this.player1.switchSprite(SpriteTypes.fall);
     }
 
     // Attack
@@ -269,14 +269,14 @@ export class Game {
     } else if (this.keys.ArrowRight.pressed && this.player2.lastKey === ControlKeys.ArrowRight) {
       this.player2.moveRight();
     } else {
-      this.player2.switchSprite("idle");
+      this.player2.switchSprite(SpriteTypes.idle);
     }
 
     // Jump
     if (this.player2.velocity.y < 0) {
-      this.player2.switchSprite("jump");
+      this.player2.switchSprite(SpriteTypes.jump);
     } else if (this.player2.velocity.y > 0) {
-      this.player2.switchSprite("fall");
+      this.player2.switchSprite(SpriteTypes.fall);
     }
 
     // Attack

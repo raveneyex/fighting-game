@@ -20,6 +20,16 @@ export interface AttackBox {
   offset: Coordinate2D;
 }
 
+export enum SpriteTypes {
+  idle = "idle",
+  jump = "jump",
+  fall = "fall",
+  attack = "attack",
+  run = "run",
+  death = "death",
+  hit = "hit",
+}
+
 export enum ControlKeys {
   a = "a",
   s = "s",
@@ -31,17 +41,6 @@ export enum ControlKeys {
   ArrowDown = "ArrowDown",
   space = " ",
 }
-
-export type ControlKey =
-  | ControlKeys.a
-  | ControlKeys.s
-  | ControlKeys.d
-  | ControlKeys.w
-  | ControlKeys.ArrowLeft
-  | ControlKeys.ArrowRight
-  | ControlKeys.ArrowUp
-  | ControlKeys.ArrowDown
-  | ControlKeys.space;
 
 interface KeyTracker {
   pressed: boolean;
