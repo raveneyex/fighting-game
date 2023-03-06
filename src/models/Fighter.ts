@@ -1,27 +1,22 @@
 import { GRAVITY } from "../utils/constants";
-import Sprite, { SpriteConstructor } from "./sprite";
-import { AttackBox, ControlKey, Coordinate2D, SpriteListing } from "./types";
-
-type FighterConstructor = Omit<SpriteConstructor, "imageSrc"> & {
-  sprites: SpriteListing;
-  attackBox: AttackBox;
-};
+import Sprite from "./sprite";
+import { AttackBox, ControlKey, Coordinate2D, FighterConstructor, SpriteListing } from "./types";
 
 export default class Fighter extends Sprite {
+  private _height: number;
+  private _width: number;
+  private _health: number;
+  private _lastKey: ControlKey;
+  private _isAttacking: boolean;
+  private _isDead: boolean;
+  private sprites: SpriteListing;
+
+  readonly attackBox: AttackBox;
+
   velocity: Coordinate2D;
-  height: number;
-  width: number;
-  lastKey: ControlKey;
-  attackBox: AttackBox;
-  color: string;
-  isAttacking: boolean;
-  health: number;
-  sprites: SpriteListing;
-  isDead: boolean;
 
   constructor({ position, canvas, offset, sprites, attackBox, scale = 2.5, framesHold = 5 }: FighterConstructor) {
-    const imageSrc = sprites.idle.imageSrc;
-    const frames = sprites.idle.frames;
+    const { imageSrc, frames } = sprites.idle;
 
     super({
       position,
@@ -32,12 +27,11 @@ export default class Fighter extends Sprite {
       imageSrc,
       frames,
     });
-    this.drawingContext = canvas.getContext("2d");
 
     this.velocity = { x: 0, y: 0 };
-    this.height = 150;
-    this.width = 50;
-    this.health = 100;
+    this._height = 150;
+    this._width = 50;
+    this._health = 100;
 
     this.attackBox = {
       position: {
@@ -49,8 +43,8 @@ export default class Fighter extends Sprite {
       offset: attackBox.offset,
     };
 
-    this.isAttacking = false;
-    this.isDead = false;
+    this._isAttacking = false;
+    this._isDead = false;
 
     this.sprites = sprites;
     this.initSpriteImages();
@@ -63,7 +57,47 @@ export default class Fighter extends Sprite {
     }
   }
 
-  public update() {
+  get width(): number {
+    return this._width;
+  }
+
+  get height(): number {
+    return this._height;
+  }
+
+  get lastKey(): ControlKey {
+    return this._lastKey;
+  }
+
+  set lastKey(value: ControlKey) {
+    this._lastKey = value;
+  }
+
+  get health(): number {
+    return this._health;
+  }
+
+  set health(value: number) {
+    this._health = value;
+  }
+
+  get isDead(): boolean {
+    return this._isDead;
+  }
+
+  set isDead(value: boolean) {
+    this._isDead = value;
+  }
+
+  get isAttacking(): boolean {
+    return this._isAttacking;
+  }
+
+  set isAttacking(value: boolean) {
+    this._isAttacking = value;
+  }
+
+  update() {
     this.draw();
     if (!this.isDead) {
       this.animateFrames();
@@ -90,22 +124,22 @@ export default class Fighter extends Sprite {
     }
   }
 
-  public attack() {
+  attack() {
     this.switchSprite("attack");
     this.isAttacking = true;
   }
 
-  public moveLeft() {
+  moveLeft() {
     this.switchSprite("run");
     this.velocity.x = -5;
   }
 
-  public moveRight() {
+  moveRight() {
     this.switchSprite("run");
     this.velocity.x = 5;
   }
 
-  public takeHit() {
+  takeHit() {
     this.health -= 20;
     if (this.health <= 0) {
       this.switchSprite("death");
@@ -114,11 +148,11 @@ export default class Fighter extends Sprite {
     }
   }
 
-  public jump() {
+  jump() {
     this.velocity.y = -20;
   }
 
-  public switchSprite(sprite: string) {
+  switchSprite(sprite: string) {
     if (this.image === this.sprites.death.image) {
       if (this.currentFrame === this.sprites.death.frames - 1) {
         this.isDead = true;

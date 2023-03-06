@@ -50,3 +50,18 @@ interface KeyTracker {
 export interface KeysTracker {
   [name: string]: KeyTracker;
 }
+
+export type SpriteConstructor = {
+  canvas: HTMLCanvasElement;
+  imageSrc: string;
+  position: Coordinate2D;
+  offset?: Coordinate2D;
+  scale?: number;
+  frames?: number;
+  framesHold?: number;
+};
+
+export type FighterConstructor = Omit<SpriteConstructor, "imageSrc"> & {
+  sprites: SpriteListing;
+  attackBox: AttackBox;
+};

@@ -1,47 +1,47 @@
-import { Coordinate2D } from "./types";
-
-export type SpriteConstructor = {
-  canvas: HTMLCanvasElement;
-  imageSrc: string;
-  position: Coordinate2D;
-  offset?: Coordinate2D;
-  scale?: number;
-  frames?: number;
-  framesHold?: number;
-};
+import { Coordinate2D, SpriteConstructor } from "./types";
 
 export default class Sprite {
-  scale: number;
-  frames: number;
-  currentFrame: number;
-  framesElapsed: number;
-  framesHold: number;
-  position: Coordinate2D;
-  offset: Coordinate2D;
-  canvas: HTMLCanvasElement;
-  drawingContext: CanvasRenderingContext2D;
-  image: HTMLImageElement;
+  private scale: number;
+  private framesElapsed: number;
+  private framesHold: number;
+  private offset: Coordinate2D;
+  private _currentFrame: number;
+  private _frames: number;
 
-  constructor({
-    position,
-    canvas,
-    imageSrc,
-    offset = { x: 0, y: 0 },
-    scale = 1,
-    frames = 1,
-    framesHold = 1,
-  }: SpriteConstructor) {
+  protected canvas: HTMLCanvasElement;
+  protected drawingContext: CanvasRenderingContext2D;
+  protected image: HTMLImageElement;
+
+  position: Coordinate2D;
+
+  constructor({ position, canvas, imageSrc, scale, frames, framesHold, offset }: SpriteConstructor) {
     this.canvas = canvas;
     this.position = position;
     this.drawingContext = canvas.getContext("2d");
     this.image = new Image();
     this.image.src = imageSrc;
-    this.scale = scale;
-    this.frames = frames;
-    this.currentFrame = 0;
+    this.scale = scale || 1;
+    this._frames = frames || 1;
+    this.framesHold = framesHold || 1;
+    this.offset = offset || { x: 0, y: 0 };
+    this._currentFrame = 0;
     this.framesElapsed = 0;
-    this.framesHold = framesHold;
-    this.offset = offset;
+  }
+
+  get currentFrame(): number {
+    return this._currentFrame;
+  }
+
+  set currentFrame(value: number) {
+    this._currentFrame = value;
+  }
+
+  get frames(): number {
+    return this._frames;
+  }
+
+  set frames(value: number) {
+    this._frames = value;
   }
 
   draw() {
@@ -64,14 +64,14 @@ export default class Sprite {
 
     if (this.framesElapsed % this.framesHold === 0) {
       if (this.currentFrame < this.frames - 1) {
-        this.currentFrame++;
+        this._currentFrame++;
       } else {
-        this.currentFrame = 0;
+        this._currentFrame = 0;
       }
     }
   }
 
-  public update() {
+  update() {
     this.draw();
     this.animateFrames();
   }
