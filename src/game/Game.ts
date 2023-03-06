@@ -56,7 +56,9 @@ export class Game {
   private isGameFinished: boolean;
 
   private constructor() {
-    if (!isMobile()) {
+    const isCellphone = isMobile();
+    console.log("Is Mobile:", isCellphone);
+    if (!isCellphone) {
       const canvas = <HTMLCanvasElement>document.querySelector(CANVAS_SELECTOR);
       canvas.width = 1024;
       canvas.height = 576;
@@ -77,8 +79,9 @@ export class Game {
 
       this.initRenderingContext();
       this.initEventListeners();
+    } else {
+      this.disableForMobile();
     }
-    this.disableForMobile();
   }
 
   static getInstance(): Game {
