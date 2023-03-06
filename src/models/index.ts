@@ -1,4 +1,4 @@
-import Sprite from "./sprite";
+import Sprite from "./Sprite";
 import Fighter from "./Fighter";
 
 export * from "./types";
