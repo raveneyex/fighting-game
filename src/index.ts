@@ -148,6 +148,11 @@ function animate() {
   } else {
     player2.switchSprite("idle");
   }
+  if (player2.velocity.y < 0) {
+    player2.switchSprite("jump");
+  } else if (player2.velocity.y > 0) {
+    player2.switchSprite("fall");
+  }
 
   if (detectCollition(player1, player2) && player1.isAttacking && player1.currentFrame === 4) {
     player1.isAttacking = false;
