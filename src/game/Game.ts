@@ -221,7 +221,7 @@ export class Game {
         case ControlKeys.w:
           this.player1.jump();
           break;
-        case ControlKeys.space:
+        case ControlKeys.s:
           this.player1.attack();
           break;
       }
@@ -408,12 +408,12 @@ export class Game {
     }
 
     // Attack
-    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 3) {
+    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
       this.player2.isAttacking = false;
       this.player1.takeHit(this.player2.hitPower);
       this.updatePlayer1Health(this.player1.health);
     }
-    if (this.player2.isAttacking && this.player2.currentFrame === 3) {
+    if (this.player2.isAttacking && this.player2.currentFrame === 2) {
       this.player2.isAttacking = false;
     }
   }
