@@ -164,7 +164,7 @@ export class Game {
 
   private initPlayers(): void {
     this.player1 = new Fighter({
-      hitPower: 30,
+      hitPower: 20,
       position: {
         x: 50,
         y: 0,
@@ -186,7 +186,7 @@ export class Game {
     });
 
     this.player2 = new Fighter({
-      hitPower: 19,
+      hitPower: 20,
       position: {
         x: 900,
         y: 100,
