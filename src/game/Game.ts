@@ -408,12 +408,12 @@ export class Game {
     }
 
     // Attack
-    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
+    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 3) {
       this.player2.isAttacking = false;
       this.player1.takeHit(this.player2.hitPower);
       this.updatePlayer1Health(this.player1.health);
     }
-    if (this.player2.isAttacking && this.player2.currentFrame === 2) {
+    if (this.player2.isAttacking && this.player2.currentFrame === 3) {
       this.player2.isAttacking = false;
     }
   }
