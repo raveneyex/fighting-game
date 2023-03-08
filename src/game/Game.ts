@@ -57,7 +57,6 @@ export class Game {
 
   private constructor() {
     const isCellphone = isMobile();
-    console.log("Is Mobile:", isCellphone);
     if (!isCellphone) {
       const canvas = <HTMLCanvasElement>document.querySelector(CANVAS_SELECTOR);
       canvas.width = 1024;

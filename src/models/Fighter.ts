@@ -124,12 +124,16 @@ export default class Fighter extends Sprite {
 
   moveLeft() {
     this.switchSprite(SpriteTypes.run);
-    this.velocity.x = -5;
+    if (this.position.x + -5 > -20) {
+      this.velocity.x = -5;
+    }
   }
 
   moveRight() {
     this.switchSprite(SpriteTypes.run);
-    this.velocity.x = 5;
+    if (this.position.x + 5 < 990) {
+      this.velocity.x = 5;
+    }
   }
 
   takeHit() {
