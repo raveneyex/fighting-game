@@ -437,13 +437,7 @@ export class Game {
       this.updatePlayer1Health(this.player1.health);
     }
 
-    if (
-      detectCollition(this.player2, this.player1) &&
-      this.player1.isAttacking &&
-      this.player1.currentFrame >= 2 &&
-      this.player2.isAttacking &&
-      this.player2.currentFrame >= 2
-    ) {
+    if (detectCollition(this.player2, this.player1) && this.player1.isAttacking && this.player2.isAttacking) {
       this.player1.isAttacking = false;
       this.player2.isAttacking = false;
     }
