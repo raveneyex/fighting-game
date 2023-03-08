@@ -27,6 +27,10 @@ body {
   color: white;
 }
 
+.info {
+  font-size: 12px;
+}
+
 .legend {
   border-top: 4px solid white;
   border-bottom: 4px solid white;

@@ -356,6 +356,14 @@ export class Game {
     });
   }
 
+  private isPlayer1AttackingEffective(): boolean {
+    return this.player1.isAttacking && this.player1.currentFrame === 2;
+  }
+
+  private isPlayer2AttackingEffective(): boolean {
+    return this.player2.isAttacking && this.player2.currentFrame === 2;
+  }
+
   private player1AnimationUpdates() {
     this.player1.update();
     this.player1.velocity.x = 0;
@@ -377,12 +385,23 @@ export class Game {
     }
 
     // Attack
-    if (detectCollition(this.player1, this.player2) && this.player1.isAttacking && this.player1.currentFrame === 4) {
+    if (
+      detectCollition(this.player1, this.player2) &&
+      this.isPlayer1AttackingEffective() &&
+      !this.player2.isAttacking
+    ) {
       this.player1.isAttacking = false;
       this.player2.takeHit(this.player1.hitPower);
       this.updatePlayer2Health(this.player2.health);
     }
-    if (this.player1.isAttacking && this.player1.currentFrame === 4) {
+
+    // Block
+    if (detectCollition(this.player1, this.player2) && this.player1.isAttacking && this.player2.isAttacking) {
+      this.player1.isAttacking = false;
+      this.player2.isAttacking = false;
+    }
+
+    if (this.isPlayer1AttackingEffective()) {
       this.player1.isAttacking = false;
     }
   }
@@ -408,12 +427,27 @@ export class Game {
     }
 
     // Attack
-    if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
+    if (
+      detectCollition(this.player2, this.player1) &&
+      this.isPlayer2AttackingEffective() &&
+      !this.player1.isAttacking
+    ) {
       this.player2.isAttacking = false;
       this.player1.takeHit(this.player2.hitPower);
       this.updatePlayer1Health(this.player1.health);
     }
-    if (this.player2.isAttacking && this.player2.currentFrame === 2) {
+
+    if (
+      detectCollition(this.player2, this.player1) &&
+      this.player1.isAttacking &&
+      this.player1.currentFrame >= 2 &&
+      this.player2.isAttacking &&
+      this.player2.currentFrame >= 2
+    ) {
+      this.player1.isAttacking = false;
+      this.player2.isAttacking = false;
+    }
+    if (this.isPlayer2AttackingEffective()) {
       this.player2.isAttacking = false;
     }
   }

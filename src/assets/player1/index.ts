@@ -4,7 +4,7 @@ import * as idle from "./Idle.png";
 import * as run from "./Run.png";
 import * as jump from "./Jump.png";
 import * as fall from "./Fall.png";
-import * as attack from "./Attack1.png";
+import * as attack from "./Attack 1 Edited.png";
 import * as hit from "./Take Hit.png";
 import * as death from "./Death.png";
 
@@ -27,7 +27,7 @@ export const player1Assets: SpriteListing = {
   },
   attack: {
     imageSrc: attack,
-    frames: 6,
+    frames: 4,
   },
   hit: {
     imageSrc: hit,
