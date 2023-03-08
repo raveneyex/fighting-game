@@ -9,6 +9,7 @@ export default class Fighter extends Sprite {
   private _lastKey: ControlKeys;
   private _isAttacking: boolean;
   private _isDead: boolean;
+  private _isJumping: boolean;
   private sprites: SpriteListing;
 
   readonly attackBox: AttackBox;
@@ -45,6 +46,7 @@ export default class Fighter extends Sprite {
 
     this._isAttacking = false;
     this._isDead = false;
+    this._isJumping = false;
 
     this.sprites = sprites;
     this.initSpriteImages();
@@ -97,6 +99,14 @@ export default class Fighter extends Sprite {
     this._isAttacking = value;
   }
 
+  get isJumping(): boolean {
+    return this._isJumping;
+  }
+
+  set isJumping(value: boolean) {
+    this._isJumping = value;
+  }
+
   update() {
     this.draw();
     if (!this.isDead) {
@@ -112,6 +122,7 @@ export default class Fighter extends Sprite {
     if (this.position.y + this.height + this.velocity.y >= this.canvas.height - 96) {
       this.velocity.y = 0;
       this.position.y = 330;
+      this.isJumping = false;
     } else {
       this.velocity.y += GRAVITY;
     }
@@ -146,7 +157,10 @@ export default class Fighter extends Sprite {
   }
 
   jump() {
-    this.velocity.y = -20;
+    if (!this.isJumping) {
+      this.isJumping = true;
+      this.velocity.y = -20;
+    }
   }
 
   switchSprite(sprite: SpriteTypes) {
