@@ -63,4 +63,5 @@ export type SpriteConstructor = {
 export type FighterConstructor = Omit<SpriteConstructor, "imageSrc"> & {
   sprites: SpriteListing;
   attackBox: AttackBox;
+  hitPower?: number;
 };

@@ -10,13 +10,23 @@ export default class Fighter extends Sprite {
   private _isAttacking: boolean;
   private _isDead: boolean;
   private _isJumping: boolean;
+  private _hitPower: number;
   private sprites: SpriteListing;
 
   readonly attackBox: AttackBox;
 
   velocity: Coordinate2D;
 
-  constructor({ position, canvas, offset, sprites, attackBox, scale = 2.5, framesHold = 5 }: FighterConstructor) {
+  constructor({
+    position,
+    canvas,
+    offset,
+    sprites,
+    attackBox,
+    scale = 2.5,
+    framesHold = 5,
+    hitPower,
+  }: FighterConstructor) {
     const { imageSrc, frames } = sprites.idle;
 
     super({
@@ -33,6 +43,7 @@ export default class Fighter extends Sprite {
     this._height = 150;
     this._width = 50;
     this._health = 100;
+    this._hitPower = hitPower;
 
     this.attackBox = {
       position: {
@@ -107,6 +118,10 @@ export default class Fighter extends Sprite {
     this._isJumping = value;
   }
 
+  get hitPower(): number {
+    return this._hitPower;
+  }
+
   update() {
     this.draw();
     if (!this.isDead) {
@@ -147,8 +162,8 @@ export default class Fighter extends Sprite {
     }
   }
 
-  takeHit() {
-    this.health -= 20;
+  takeHit(hitValue: number) {
+    this.health -= hitValue;
     if (this.health <= 0) {
       this.switchSprite(SpriteTypes.death);
     } else {

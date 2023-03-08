@@ -35,9 +35,10 @@ export class Game {
   private startButtonContainer: HTMLDivElement;
   private startButton: HTMLButtonElement;
 
-  // Timer
+  // Timers
   private timer: number;
   private timerId: number;
+  private messageDisplayTimerId: number;
 
   // Animation Frames
   private animationFrame: number;
@@ -119,6 +120,9 @@ export class Game {
     if (this.timerId) {
       clearTimeout(this.timerId);
     }
+    if (this.messageDisplayTimerId) {
+      clearTimeout(this.messageDisplayTimerId);
+    }
     if (this.animationFrame) {
       window.cancelAnimationFrame(this.animationFrame);
     }
@@ -160,6 +164,7 @@ export class Game {
 
   private initPlayers(): void {
     this.player1 = new Fighter({
+      hitPower: 30,
       position: {
         x: 50,
         y: 0,
@@ -181,6 +186,7 @@ export class Game {
     });
 
     this.player2 = new Fighter({
+      hitPower: 19,
       position: {
         x: 900,
         y: 100,
@@ -295,6 +301,9 @@ export class Game {
 
   private determineWinner(): void {
     clearTimeout(this.timerId);
+    if (this.messageDisplayTimerId) {
+      clearTimeout(this.messageDisplayTimerId);
+    }
 
     if (this.player1.health === this.player2.health) {
       this.updateMessage(TIE_MESSAGE);
@@ -305,7 +314,8 @@ export class Game {
     }
 
     this.isGameFinished = true;
-    window.setTimeout(() => {
+
+    this.messageDisplayTimerId = window.setTimeout(() => {
       this.messageDisplay.style.display = "none";
       this.startButtonContainer.style.display = "flex";
     }, 2000);
@@ -324,12 +334,23 @@ export class Game {
   }
 
   private updatePlayer1Health(value: number): void {
+    if (value < 0) {
+      gsap.to(PLAYER1_HEALTHBAR_SELECTOR, {
+        width: `0%`,
+      });
+    }
+
     gsap.to(PLAYER1_HEALTHBAR_SELECTOR, {
       width: `${value}%`,
     });
   }
 
   private updatePlayer2Health(value: number): void {
+    if (value < 0) {
+      gsap.to(PLAYER2_HEALTHBAR_SELECTOR, {
+        width: `0%`,
+      });
+    }
     gsap.to(PLAYER2_HEALTHBAR_SELECTOR, {
       width: `${value}%`,
     });
@@ -358,7 +379,7 @@ export class Game {
     // Attack
     if (detectCollition(this.player1, this.player2) && this.player1.isAttacking && this.player1.currentFrame === 4) {
       this.player1.isAttacking = false;
-      this.player2.takeHit();
+      this.player2.takeHit(this.player1.hitPower);
       this.updatePlayer2Health(this.player2.health);
     }
     if (this.player1.isAttacking && this.player1.currentFrame === 4) {
@@ -389,7 +410,7 @@ export class Game {
     // Attack
     if (detectCollition(this.player2, this.player1) && this.player2.isAttacking && this.player2.currentFrame === 2) {
       this.player2.isAttacking = false;
-      this.player1.takeHit();
+      this.player1.takeHit(this.player2.hitPower);
       this.updatePlayer1Health(this.player1.health);
     }
     if (this.player2.isAttacking && this.player2.currentFrame === 2) {
@@ -404,7 +425,7 @@ export class Game {
     this.player1AnimationUpdates();
     this.player2AnimationUpdates();
 
-    if (this.player1.health === 0 || this.player2.health === 0) {
+    if (!this.isGameFinished && (this.player1.health <= 0 || this.player2.health <= 0)) {
       this.determineWinner();
     }
   }
